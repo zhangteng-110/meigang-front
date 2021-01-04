@@ -1,0 +1,335 @@
+<template>
+  <div class="app-container">
+    <div class="overview-layout">
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <div class="out-border">
+            <div class="layout-title">用户总览(单位/人)</div>
+            <div style="padding: 20px">
+              <el-row :span="24">
+                <el-col :span="8" style="margin-top: 50px">
+                  <el-row>
+                    <el-col :span="8" class="color-danger overview-item-value">{{ usernumber }}</el-col>
+                    <el-col :span="8" class="color-danger overview-item-value">{{ staffnumber-1 }}</el-col>
+                    <el-col :span="8" class="color-danger overview-item-value">{{ uservipnum }}</el-col>
+                  </el-row>
+                  <el-row style="margin-top: 20px">
+                    <el-col :span="8" class="overview-item-title">客户</el-col>
+                    <el-col :span="8" class="overview-item-title">员工</el-col>
+                    <el-col :span="8" class="overview-item-title">VIP</el-col>
+                  </el-row>
+                </el-col>
+                <el-col :span="16">
+                  <el-row>
+                    <el-col style="text-align:center;margin-top: 20px;;margin-bottom: 20px" :span="8">        
+                      <el-progress :width="150" type="circle" :percentage="parseInt((this.uservipnum/this.usernumber)*100)" v-if="parseInt((this.uservipnum/this.usernumber)*100)"></el-progress>
+                      <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
+                    </el-col>
+                    <el-col :span="8" >
+                      <div ref="echartsNumber" style="width: 350px;height:200px;"></div>
+                    </el-col>
+                  </el-row>
+                  
+                </el-col>
+              </el-row>
+            </div>
+          </div> 
+        </el-col>
+      </el-row>
+    </div>
+    <div class="statistics-layout">
+      <div class="layout-title">营业额统计</div>
+      <el-row>
+        <el-col :span="6">
+          <div style="padding: 20px">
+            <div style="margin-top: 20px;">
+              <div style="color: #909399;font-size: 14px">上月营业额</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
+              <!-- <div>
+                <span class="color-danger" style="font-size: 14px">-10%</span>
+                <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
+              </div> -->
+            </div>
+            <div style="margin-top: 20px;">
+              <div style="color: #909399;font-size: 14px">昨日营业额</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowmoney }}</div>
+              <!-- <div>
+                <span class="color-success" style="font-size: 14px">+10%</span>
+                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              </div> -->
+            </div>        
+            <div style="margin-top: 20px;">
+              <div style="color: #909399;font-size: 14px">今年总营业额</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearmoney }}</div>
+              <!-- <div>
+                <span class="color-success" style="font-size: 14px">+10%</span>
+                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              </div> -->
+            </div>
+            <div style="margin-top: 20px;">
+              <div style="color: #909399;font-size: 14px">本周销售总额</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div>
+              <!-- <div>
+                <span class="color-danger" style="font-size: 14px">-10%</span>
+                <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
+              </div> -->
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div ref="echarts" style="margin-top: 30px;width: 600px;height:400px;"></div>
+        </el-col>
+      </el-row>
+    </div>
+  </div>
+</template>
+
+<script>
+  // import {str2Date} from '@/utils/date';
+  // import img_home_order from '@/assets/images/home_order.png';
+  // import img_home_today_amount from '@/assets/images/home_today_amount.png';
+  // import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
+  export default {
+    name: 'home',
+    data() {
+      return {
+        staffnumber: 0,
+        usernumber: 0,
+        uservipnum: 0,
+        tomorrowmoney: 0,
+        lastmonthmoney: 0,
+        lastyearmoney: 0,
+      }
+    },
+    created(){
+      this.getStaffNumber();
+      this.getUserNumber();
+      this.getUserVipNumber();
+      this.getTomorrowMoney();
+      this.getLastMonthMoney();
+      this.getLastYearMoney();
+      this.$nextTick(() => {
+        this.myEcharts();
+      });
+      
+    },
+    updated(){
+      this.$nextTick(() => {
+        this.myEchartsNum();
+      });
+    },
+    methods:{
+      getStaffNumber(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/staff/getStaffNumber').then((result) => {
+            this.staffnumber = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getUserNumber(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/user/getUserNumber').then((result) => {
+            this.usernumber = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getUserVipNumber(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/user/getUserVipNumber').then((result) => {
+            this.uservipnum = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getTomorrowMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectTomorrowTransactionMoney').then((result) => {
+            this.tomorrowmoney = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getLastMonthMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectMonthTransactionMoney').then((result) => {
+            this.lastmonthmoney = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getLastYearMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectLastYearMoney').then((result) => {
+            this.lastyearmoney = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      myEcharts(){
+        // 基于准备好的dom，初始化echarts实例
+        var bar_dv = this.$refs.echarts;
+        let myChart = this.$echarts.init(bar_dv);
+        // 指定图表的配置项和数据
+        this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectEveryYearMoney').then((result) => {
+            var option = {
+              title: {
+                text: '年度营业额'
+              },
+              tooltip: {},
+              legend: {
+                data:['营业额']
+              },
+              xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ["1","2","3","4","5","6","7","8","9","10","11","12"]
+                
+              },
+              yAxis: {
+                type: 'value',
+          
+              },
+              series: [{
+                name: '营业额',
+                type: 'line',
+                data: result.data,
+                areaStyle: {
+                }
+              }]
+            };
+          myChart.setOption(option);
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+        
+        // 使用刚指定的配置项和数据显示图表。
+      },
+      myEchartsNum(){
+        let myEchartsNum = this.$echarts.init(this.$refs.echartsNumber);
+        myEchartsNum.setOption({
+          series : [
+              {
+                  name: '人数占比',
+                  type: 'pie',
+                  radius: '70%',
+                  center: ['50%', '50%'],
+                  color: ['#dd6b66','#759aa0','#e69d87','#8dc1a9','#ea7e53','#eedd78','#73a373','#73b9bc','#7289ab', '#91ca8c','#f49f42'],
+                  data:[
+                      {value:this.usernumber, name:'客户'},
+                      {value:this.staffnumber-1, name:'员工'}
+                  ],
+                  lineStyle: {
+                      color: 'rgba(255, 255, 255, 0.3)'
+                  },
+                  textStyle: {
+                      color: 'rgba(255, 255, 255, 0.3)'
+                  },
+                  itemStyle:{ 
+                    normal:{ 
+                      label:{ 
+                        show: true, 
+                        formatter: '{b} : {c} ({d}%)' 
+                      }, 
+                      labelLine :{show:true} 
+                    } 
+                  },
+                  
+                  
+              }
+          ]
+        });
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .app-container {
+    /* margin-top: 40px; */
+    margin-left: 120px;
+    margin-right: 120px;
+  }
+
+  .total-layout {
+    margin-top: 20px;
+  }
+
+  .total-frame {
+    border: 1px solid #DCDFE6;
+    padding: 10px;
+    height: 70px;
+  }
+
+  .total-icon {
+    color: #409EFF;
+    width: 60px;
+    height: 60px;
+  }
+
+  .total-title {
+    position: relative;
+    font-size: 16px;
+    color: #909399;
+    left: 70px;
+    top: -50px;
+  }
+
+  .total-value {
+    position: relative;
+    font-size: 18px;
+    color: #606266;
+    left: 70px;
+    top: -40px;
+  }
+
+  .un-handle-layout {
+    margin-top: 20px;
+    border: 1px solid #DCDFE6;
+  }
+
+  .layout-title {
+    color: #606266;
+    padding: 15px 20px;
+    background: #a9c3eb;
+    font-weight: bold;
+  }
+
+  .un-handle-content {
+    padding: 20px 40px;
+  }
+
+  .un-handle-item {
+    border-bottom: 1px solid #EBEEF5;
+    padding: 10px;
+  }
+
+  .overview-layout {
+    margin-top: 20px;
+  }
+
+  .overview-item-value {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .overview-item-title {
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .out-border {
+    border: 1px solid #DCDFE6;
+  }
+
+  .statistics-layout {
+    margin-top: 20px;
+    border: 1px solid #DCDFE6;
+  }
+  
+  .address-content{
+    padding: 20px;
+    font-size: 18px
+  }
+
+  .left{
+    float:left;
+    width:600px;
+  }
+  
+</style>
