@@ -6,6 +6,7 @@ import Staff from "@/components/view/staff"
 import Home from '@/components/home/home'
 import Index from '@/components/home/index'
 import Recharge from "@/components/view/recharge";
+import Consumption from "@/components/view/consumption";
 import Error_404 from '@/components/404.vue'
 
 Vue.use(Router)
@@ -27,7 +28,8 @@ export default new Router({
         {path: '/index',name: 'index',component: Index},
         {path: '/users',name: 'users',component: Users},
         {path: '/staff',name: 'staff',component: Staff},
-        {path: '/recharge',name: 'recharge',component: Recharge}
+        {path: '/recharge',name: 'recharge',component: Recharge},
+        {path: '/consumption',name: 'consumption',component: Consumption}
       ]
     },{
       path: '/error_404',
@@ -36,3 +38,8 @@ export default new Router({
     }
   ]
 })
+const originalPush = Router.prototype.push
+      Router.prototype.push = function push(location) {
+        return originalPush.call(this, location).catch(err => err)
+      }
+

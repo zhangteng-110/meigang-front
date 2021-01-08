@@ -14,8 +14,8 @@ import { default } from '../home/home.vue';
             </el-col>
         </el-row>
         <el-table :data="staffList" style="width: 100%" :header-cell-style="{background:'#c2cedb',color:'black'}" :default-sort = "{prop: 'startDate'}">
-            <el-table-column header-align="center" align="center" prop="staffId" label="ID" width="50"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="staffName" label="姓名" width="100"></el-table-column>
+            <el-table-column header-align="center" align="center" prop="staffId" label="ID" width="60"></el-table-column>
+            <el-table-column header-align="center" align="center" prop="staffName" label="姓名" width="70"></el-table-column>
             <el-table-column header-align="center" align="center" prop="staffSex" label="性别" width="60">
                 <template slot-scope="scope">
                     <span v-if="scope.row.staffSex === 'MAN'">男</span>
@@ -28,6 +28,7 @@ import { default } from '../home/home.vue';
                 </template>
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="phone" label="手机号" width="140"></el-table-column>
+            <el-table-column header-align="center" align="center" prop="roleName" label="职位" width="70"></el-table-column>
             <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" width="130">
                 <template slot-scope="scope">
                     {{scope.row.startDate | fmtdate}}
@@ -39,9 +40,10 @@ import { default } from '../home/home.vue';
                 </template>
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="salary" label="薪资" width="80"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="130">
+            <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="150">
                 <template slot-scope="scope">
-                    <el-button plain size="mini" type="primary" icon="el-icon-edit" circle></el-button>
+                    <el-button plain size="mini" type="primary" icon="el-icon-star-off" circle></el-button>
+                    <el-button plain size="mini" type="primary" icon="el-icon-edit" circle @click="selectStaffById(scope.row.staffId)"></el-button>
                     <el-button plain size="mini" type="danger" icon="el-icon-delete" circle @click="deleteUser(scope.row.staffId)"></el-button>
                 </template>
             </el-table-column>
@@ -74,10 +76,54 @@ import { default } from '../home/home.vue';
                 <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
                     <el-input clearable size="medium" v-model="staff.salary" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>
+                <el-form-item label="职位角色" prop="salary" :label-width="formLabelWidth">
+                    <el-select v-model="staff.roleId" clearable placeholder="请选择">
+                        <el-option
+                        v-for="item in roleList"
+                        :key="item.roleId"
+                        :label="item.roleName"
+                        :value="item.roleId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="cancel()">取 消</el-button>
                 <el-button type="primary" @click="userAdd()">确 定</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="员工信息编辑" width="470px" :visible.sync="dialogFormVisibleEdit" @close='editCancel()' close-on-press-escape>
+            <el-form :model="staffdetail" :rules="rules" ref="editForm">
+                <el-form-item label="员工姓名" prop="staffname" :label-width="formLabelWidth">
+                    <el-input clearable size="medium" v-model="staffdetail.staffName" autocomplete="off" style ="width:230px;"></el-input>
+                </el-form-item>
+                <el-form-item label="性别" :label-width="formLabelWidth">
+                    <el-radio v-model="staffdetail.staffSex" label="MAN">男</el-radio>
+                    <el-radio v-model="staffdetail.staffSex" label="WEMAN">女</el-radio>
+                </el-form-item>
+                <el-form-item label="证件号" prop="staffcode" :label-width="formLabelWidth">
+                    <el-input clearable size="medium" v-model="staffdetail.staffCode" autocomplete="off" style ="width:230px;"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="phone" :label-width="formLabelWidth">
+                    <el-input clearable size="medium" v-model="staffdetail.phone" autocomplete="off" style ="width:230px;"></el-input>
+                </el-form-item>
+                <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
+                    <el-input clearable size="medium" v-model="staffdetail.salary" autocomplete="off" style ="width:230px;"></el-input>
+                </el-form-item>
+                <el-form-item label="职位角色" prop="salary" :label-width="formLabelWidth">
+                    <el-select v-model="staffdetail.roleName" clearable placeholder="请选择">
+                        <el-option
+                        v-for="item in roleList"
+                        :key="item.roleId"
+                        :label="item.roleName"
+                        :value="item.roleId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button @click="editCancel()">取 消</el-button>
+                <el-button type="primary" @click="staffEdit()">确 定</el-button>
             </div>
         </el-dialog>
     </el-card>
@@ -100,12 +146,16 @@ export default {
         return{
             query: '',
             staffList: [],
+            roleList: '',
             // 分页参数
             pageSize: 10,
             total: 0,
             currentPage: 1,
             // 控制用户添加框参数
             dialogFormVisibleAdd : false,
+            // 控制用户修改框参数
+            dialogFormVisibleEdit: false,
+            staffdetail:{},
 
             formLabelWidth: '120px',
             value: 1,
@@ -132,11 +182,11 @@ export default {
     },
     created(){
         this.getUserList();
+        this.getRoleList();
     },
     methods:{
         getUserList(){
             this.$axios.post('http://10.6.11.82:3000/meigang/staff/selectAllStaff?pageNum='+this.currentPage+'&pageSize='+this.pageSize, {staffName:this.query}).then((result) => {
-                console.log(result.data.list);
                 if (result.data == null) {
                     
                 }else{
@@ -162,23 +212,26 @@ export default {
         },
         userAdd(){
             this.dialogFormVisibleAdd = true;
-            this.$axios.post('http://10.6.11.82:3000/meigang/user/register', {
+            this.$axios.post('http://10.6.11.82:3000/meigang/staff/register', {
                 staffName:this.staff.staffname,
                 staffCode:this.staff.staffcode,
                 phone:this.staff.phone,
                 staffSex:this.staff.staffsex,
-                salary:this.staff.salary}).then((result) => {
+                salary:this.staff.salary,
+                staffPositionId:this.staff.roleId}).then((result) => {
                 if (result.data == null) {
                     
                 }else{
                     // this.total = result.data.length;
                     // this.userList = result.data;
                     this.$message.success(result.data.errorMessage);
-                    this.dialogFormVisibleAdd = false;
                     this.getUserList();
+                    this.dialogFormVisibleAdd = false;
+                    
                 }
             }).catch((result) => {
                 // this.loading = false
+                this.$message.error('网络异常');
             });
         },
         cancel(){
@@ -188,6 +241,11 @@ export default {
             this.staff.phone = '',
             this.staff.staffsex = '',
             this.staff.salary = ''
+        },
+        editCancel(){
+            this.dialogFormVisibleEdit = false;
+            this.staffdetail = {};
+            this.$refs["editForm"].clearValidate();
         },
         deleteUser(staffId){
             console.log(userId)
@@ -207,10 +265,37 @@ export default {
                         }
                         this.getUserList();
                 }).catch((result) => {
-                    
+                    this.$message.error('网络异常');
                 });
         },
+        getRoleList(){
+            this.$axios.get('http://10.6.11.82:3000/meigang/role/getRoleList').then((result) => {
+                console.log(result.data);
+                if (result.data == null) {
+                    
+                }else{
+                    this.roleList = result.data;
+                    
+                }
+            }).catch((result) => {
+                // this.loading = false
 
+            });
+        },
+        selectStaffById(staffId){
+            this.dialogFormVisibleEdit=true;
+            this.$axios.post('http://10.6.11.82:3000/meigang/staff/selectStaffById?staffId='+staffId).then((result) => {
+                if (result.data == null) {
+                    
+                }else{
+                    this.staffdetail = result.data;
+                    
+                }
+            }).catch((result) => {
+                // this.loading = false
+
+            });
+        }
     }
 }
 </script>
