@@ -110,7 +110,7 @@ import { default } from '../home/home.vue';
                 <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
                     <el-input clearable size="medium" v-model="staffdetail.salary" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>
-                <el-form-item label="职位角色" prop="salary" :label-width="formLabelWidth">
+                <el-form-item label="职位角色" prop="roleId" :label-width="formLabelWidth">
                     <el-select v-model="staffdetail.roleName" clearable placeholder="请选择">
                         <el-option
                         v-for="item in roleList"
@@ -248,7 +248,6 @@ export default {
             this.$refs["editForm"].clearValidate();
         },
         deleteUser(staffId){
-            console.log(userId)
             this.$axios.post('http://10.6.11.82:3000/meigang/staff/deleteStaffById?staffId='+staffId).then((result) => {
                         if (result.data == null) {
                             this.$notify({
@@ -270,7 +269,6 @@ export default {
         },
         getRoleList(){
             this.$axios.get('http://10.6.11.82:3000/meigang/role/getRoleList').then((result) => {
-                console.log(result.data);
                 if (result.data == null) {
                     
                 }else{
@@ -294,6 +292,27 @@ export default {
             }).catch((result) => {
                 // this.loading = false
 
+            });
+        },
+        staffEdit(){
+            console.log(this.staffdetail.roleName)
+            this.$axios.post('http://10.6.11.82:3000/meigang/staff/updateStaffDetail', {
+                staffId:this.staffdetail.staffId,
+                staffName:this.staffdetail.staffName,
+                staffCode:this.staffdetail.staffCode,
+                phone:this.staffdetail.phone,
+                staffSex:this.staffdetail.staffSex,
+                salary:this.staffdetail.salary,
+                staffPositionId:this.staffdetail.roleId}).then((result) => {
+                if (result.data == null) {
+                    
+                }else{
+                    this.$message.success(result.data.errorMessage);
+                    this.dialogFormVisibleEdit = false;
+                    this.getUserList();
+                }
+            }).catch((result) => {
+                this.$message.error('网络异常');
             });
         }
     }
