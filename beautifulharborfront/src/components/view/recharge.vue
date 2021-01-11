@@ -30,7 +30,7 @@ import { default } from '../home/home.vue';
         </el-row>
         <el-table :data="rechargeList" style="width: 100%" :header-cell-style="{background:'#c2cedb',color:'black'}" :default-sort = "{prop: 'userId'}">
             <el-table-column header-align="center" align="center" prop="transactionId" label="交易ID" width="100"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="transactionMoney" label="充值金额(元)" width="150"></el-table-column>
+            <el-table-column header-align="center" align="center" sortable prop="transactionMoney" label="充值金额(元)" width="150"></el-table-column>
             <el-table-column header-align="center" align="center" sortable prop="transactionDate" label="充值日期" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>

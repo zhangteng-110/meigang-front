@@ -7,6 +7,13 @@ import { default } from '../home/home.vue';
         </el-breadcrumb>
         <el-row class="el-search">
             <el-col>
+                <el-input
+                placeholder="请输入姓名"
+                v-model="realName"
+                prefix-icon="el-icon-search"
+                style="width:200px;"
+                clearable>
+                </el-input>
                 <el-date-picker
                 v-model="datetime"
                 type="datetimerange"
@@ -23,7 +30,7 @@ import { default } from '../home/home.vue';
         </el-row>
         <el-table :data="consumptionList" style="width: 100%" :header-cell-style="{background:'#c2cedb',color:'black'}" :default-sort = "{prop: 'userId'}">
             <el-table-column header-align="center" align="center" prop="consumptionId" label="交易ID" width="100"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="consumptionMoney" label="充值金额(元)" width="150"></el-table-column>
+            <el-table-column header-align="center" align="center" sortable prop="consumptionMoney" label="充值金额(元)" width="150"></el-table-column>
             <el-table-column header-align="center" align="center" sortable prop="consumptionDate" label="充值日期" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
@@ -52,6 +59,7 @@ export default {
         return{
             consumptionList: [],
             datetime:'',
+            realName:'',
             // 分页参数
             pageSize: 10,//每页显示条数
             total: 0,
@@ -96,7 +104,7 @@ export default {
     methods:{
         getConsumption(){
             this.$axios.post('http://10.6.11.82:3000/meigang/consumption/selectConsumptionList?pageNum='+this.currentPage+'&pageSize='+this.pageSize, {
-                startDate:this.datetime[0],endDate:this.datetime[1]}).then((result) => {
+                startDate:this.datetime[0],endDate:this.datetime[1],realName:this.realName}).then((result) => {
                 if (result.data == null) {
                     
                 }else{
