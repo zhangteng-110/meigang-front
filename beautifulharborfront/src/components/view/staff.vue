@@ -42,9 +42,15 @@ import { default } from '../home/home.vue';
             <el-table-column header-align="center" align="center" prop="salary" label="薪资" width="80"></el-table-column>
             <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="150">
                 <template slot-scope="scope">
-                    <el-button plain size="mini" type="primary" icon="el-icon-star-off" circle></el-button>
-                    <el-button plain size="mini" type="primary" icon="el-icon-edit" circle @click="selectStaffById(scope.row.staffId)"></el-button>
-                    <el-button plain size="mini" type="danger" icon="el-icon-delete" circle @click="deleteUser(scope.row.staffId)"></el-button>
+                    <el-tooltip :content="scope.row.status==0 ?'上任':'离职'" class="item" effect="dark" placement="top">
+                        <el-switch @change="changeStatus(scope.row.status,scope.row.staffId)" v-model="scope.row.status" :active-value="1" :inactive-value="0" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                    </el-tooltip>&nbsp;&nbsp;
+                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                        <el-button plain size="mini" type="primary" icon="el-icon-edit" circle @click="selectStaffById(scope.row.staffId)"></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                        <el-button plain size="mini" type="danger" icon="el-icon-delete" circle @click="deleteUser(scope.row.staffId)"></el-button>
+                    </el-tooltip>
                 </template>
             </el-table-column>
         </el-table>
@@ -111,7 +117,7 @@ import { default } from '../home/home.vue';
                     <el-input clearable size="medium" v-model="staffdetail.salary" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>
                 <el-form-item label="职位角色" prop="roleId" :label-width="formLabelWidth">
-                    <el-select v-model="staffdetail.roleName" clearable placeholder="请选择">
+                    <el-select v-model="staffdetail.roleId" clearable placeholder="请选择">
                         <el-option
                         v-for="item in roleList"
                         :key="item.roleId"
@@ -157,6 +163,7 @@ export default {
             dialogFormVisibleEdit: false,
             staffdetail:{},
 
+            status: '',
             formLabelWidth: '120px',
             value: 1,
             staff: {
@@ -295,7 +302,6 @@ export default {
             });
         },
         staffEdit(){
-            console.log(this.staffdetail.roleName)
             this.$axios.post('http://10.6.11.82:3000/meigang/staff/updateStaffDetail', {
                 staffId:this.staffdetail.staffId,
                 staffName:this.staffdetail.staffName,
@@ -314,7 +320,20 @@ export default {
             }).catch((result) => {
                 this.$message.error('网络异常');
             });
-        }
+        },
+        changeStatus(status,staffId){
+            this.$axios.post('http://10.6.11.82:3000/meigang/staff/updateStatusById', {staffId:staffId,status:status}).then((result) => {
+                    this.getUserList();
+                    this.$notify({
+                        title: '成功',
+                        message: result.data.errorMessage,
+                        type: 'success'
+                    });
+            }).catch((result) => {
+                this.$message.error('网络异常');
+            }); 
+        },
+        
     }
 }
 </script>
