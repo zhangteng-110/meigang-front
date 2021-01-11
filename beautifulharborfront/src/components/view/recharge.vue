@@ -7,6 +7,13 @@ import { default } from '../home/home.vue';
         </el-breadcrumb>
         <el-row class="el-search">
             <el-col>
+                <el-input
+                placeholder="请输入姓名"
+                v-model="realName"
+                prefix-icon="el-icon-search"
+                style="width:200px;"
+                clearable>
+                </el-input>
                 <el-date-picker
                 v-model="datetime"
                 type="datetimerange"
@@ -51,6 +58,7 @@ export default {
         return{
             rechargeList: [],
             datetime:'',
+            realName:'',
             // 分页参数
             pageSize: 10,//每页显示条数
             total: 0,
@@ -95,7 +103,7 @@ export default {
     methods:{
         getRecharge(){
             this.$axios.post('http://10.6.11.82:3000/meigang/transaction/selectTransactionList?pageNum='+this.currentPage+'&pageSize='+this.pageSize, {
-                startDate:this.datetime[0],endDate:this.datetime[1]}).then((result) => {
+                startDate:this.datetime[0],endDate:this.datetime[1],realName:this.realName}).then((result) => {
                 if (result.data == null) {
                     
                 }else{

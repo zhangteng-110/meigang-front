@@ -326,7 +326,7 @@ export default {
                     this.getUserList();
                     this.$notify({
                         title: '成功',
-                        message: result.data.errorMessage,
+                        message: '操作成功',
                         type: 'success'
                     });
             }).catch((result) => {
