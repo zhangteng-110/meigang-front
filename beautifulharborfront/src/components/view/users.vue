@@ -177,6 +177,21 @@ import { default } from '../home/home.vue';
                 </el-form-item>  
                 <el-form-item label="本次消费金额" prop="money" :label-width="formLabelWidth">
                     <el-input-number v-model="num" size="medium" :precision="1" :step="1" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="服务项目" prop="projectId" :label-width="formLabelWidth">
+                    <el-select v-model="userdetail.projectId" placeholder="请选择">
+                        <el-option-group
+                        v-for="group in options"
+                        :key="group.label"
+                        :label="group.label">
+                            <el-option
+                                v-for="item in group.project"
+                                :key="item.projectId"
+                                :label="item.projectName"
+                                :value="item.projectId">
+                            </el-option>
+                        </el-option-group>
+                    </el-select>    
                 </el-form-item>        
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -267,6 +282,13 @@ export default {
             // 控制用户消费框参数
             dialogFormVisibleConsumption: false,
             num:0,
+            options: [{
+                label: '男士',
+                project: [],
+            },{
+                label: '女士',
+                project: [],
+            }],
             // 控制用户充值框参数
             dialogFormVisibleRecharge: false
         }
@@ -277,6 +299,8 @@ export default {
         setInterval(function(){
             _this.getUserList();
         },60000)
+        _this.getManProjectList();
+        _this.getWemanProjectList();
     },
     methods:{
         getUserList(){
@@ -558,7 +582,8 @@ export default {
             this.$axios.post('http://10.6.11.82:3000/meigang/user/consumption', {
                 userId:this.userdetail.userId,
                 userCode:this.userdetail.userCode,
-                money:this.num}).then((result) => {
+                money:this.num,
+                projectId:this.userdetail.projectId}).then((result) => {
                 if (result.data == null) {
                     
                 }else{
@@ -585,7 +610,27 @@ export default {
             }).catch((result) => {
                 this.$message.error('网络异常');
             });
-        }
+        },
+        getManProjectList(){
+            this.$axios.get('http://10.6.11.82:3000/meigang/service/getManProjectList').then((result) => {
+                if (result.data == null) {
+                    
+                }else{ 
+                    this.options[0].project = result.data;
+                }
+            }).catch((result) => {
+            });
+        },
+        getWemanProjectList(){
+            this.$axios.get('http://10.6.11.82:3000/meigang/service/getWemanProjectList').then((result) => {
+                if (result.data == null) {
+                    
+                }else{
+                    this.options[1].project = result.data;
+                }
+            }).catch((result) => {
+            });
+        },
     }
 }
 </script>

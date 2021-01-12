@@ -82,7 +82,7 @@ import { default } from '../home/home.vue';
                 <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
                     <el-input clearable size="medium" v-model="staff.salary" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>
-                <el-form-item label="职位角色" prop="salary" :label-width="formLabelWidth">
+                <el-form-item label="职位角色" prop="roleId" :label-width="formLabelWidth">
                     <el-select v-model="staff.roleId" clearable placeholder="请选择">
                         <el-option
                         v-for="item in roleList"

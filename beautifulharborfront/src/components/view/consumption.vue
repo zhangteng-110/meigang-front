@@ -30,14 +30,15 @@ import { default } from '../home/home.vue';
         </el-row>
         <el-table :data="consumptionList" style="width: 100%" :header-cell-style="{background:'#c2cedb',color:'black'}" :default-sort = "{prop: 'userId'}">
             <el-table-column header-align="center" align="center" prop="consumptionId" label="交易ID" width="100"></el-table-column>
-            <el-table-column header-align="center" align="center" sortable prop="consumptionMoney" label="充值金额(元)" width="150"></el-table-column>
-            <el-table-column header-align="center" align="center" sortable prop="consumptionDate" label="充值日期" width="200">
+            <el-table-column header-align="center" align="center" sortable prop="consumptionMoney" label="消费金额(元)" width="150"></el-table-column>
+            <el-table-column header-align="center" align="center" sortable prop="consumptionDate" label="消费日期" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     {{scope.row.consumptionDate | fmtdatetime}}
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="realName" label="客户姓名" width="150"></el-table-column>
+            <el-table-column header-align="center" align="center" prop="projectName" label="消费项目" width="150"></el-table-column>
+            <el-table-column header-align="center" align="center" prop="realName" label="客户姓名" width="100"></el-table-column>
             <el-table-column header-align="center" align="center" prop="integral" label="积分" width="150"></el-table-column>
             <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="200">
             </el-table-column>
