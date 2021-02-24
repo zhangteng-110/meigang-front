@@ -1,87 +1,96 @@
 <template>
-  <div class="app-container">
-    <div class="overview-layout">
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <div class="out-border">
-            <div class="layout-title">用户总览(单位/人)</div>
+  <el-card class="el-card">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <i :class="{'el-icon-s-fold':isCollapse,'el-icon-s-unfold':!isCollapse}" @click="isC()" style="color: black"></i> -->
+      <el-breadcrumb-item :to="{ path: ''}">
+        首页
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="app-container">
+      <div class="overview-layout">
+        
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <div class="out-border">
+              <div class="layout-title">用户总览(单位/人)</div>
+              <div style="padding: 20px">
+                <el-row :span="24">
+                  <el-col :span="8" style="margin-top: 50px">
+                    <el-row>
+                      <el-col :span="8" class="color-danger overview-item-value">{{ usernumber }}</el-col>
+                      <el-col :span="8" class="color-danger overview-item-value">{{ staffnumber-1 }}</el-col>
+                      <el-col :span="8" class="color-danger overview-item-value">{{ uservipnum }}</el-col>
+                    </el-row>
+                    <el-row style="margin-top: 20px">
+                      <el-col :span="8" class="overview-item-title">客户</el-col>
+                      <el-col :span="8" class="overview-item-title">员工</el-col>
+                      <el-col :span="8" class="overview-item-title">VIP</el-col>
+                    </el-row>
+                  </el-col>
+                  <el-col :span="16">
+                    <el-row>
+                      <el-col style="text-align:center;margin-top: 20px;;margin-bottom: 20px" :span="8">        
+                        <el-progress :width="150" type="circle" :percentage="parseInt((this.uservipnum/this.usernumber)*100)" v-if="parseInt((this.uservipnum/this.usernumber)*100)"></el-progress>
+                        <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
+                      </el-col>
+                      <el-col :span="8" >
+                        <div ref="echartsNumber" style="width: 350px;height:200px;"></div>
+                      </el-col>
+                    </el-row>
+                    
+                  </el-col>
+                </el-row>
+              </div>
+            </div> 
+          </el-col>
+        </el-row>
+      </div>
+      <div class="statistics-layout">
+        <div class="layout-title">营业额统计</div>
+        <el-row>
+          <el-col :span="6">
             <div style="padding: 20px">
-              <el-row :span="24">
-                <el-col :span="8" style="margin-top: 50px">
-                  <el-row>
-                    <el-col :span="8" class="color-danger overview-item-value">{{ usernumber }}</el-col>
-                    <el-col :span="8" class="color-danger overview-item-value">{{ staffnumber-1 }}</el-col>
-                    <el-col :span="8" class="color-danger overview-item-value">{{ uservipnum }}</el-col>
-                  </el-row>
-                  <el-row style="margin-top: 20px">
-                    <el-col :span="8" class="overview-item-title">客户</el-col>
-                    <el-col :span="8" class="overview-item-title">员工</el-col>
-                    <el-col :span="8" class="overview-item-title">VIP</el-col>
-                  </el-row>
-                </el-col>
-                <el-col :span="16">
-                  <el-row>
-                    <el-col style="text-align:center;margin-top: 20px;;margin-bottom: 20px" :span="8">        
-                      <el-progress :width="150" type="circle" :percentage="parseInt((this.uservipnum/this.usernumber)*100)" v-if="parseInt((this.uservipnum/this.usernumber)*100)"></el-progress>
-                      <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
-                    </el-col>
-                    <el-col :span="8" >
-                      <div ref="echartsNumber" style="width: 350px;height:200px;"></div>
-                    </el-col>
-                  </el-row>
-                  
-                </el-col>
-              </el-row>
+              <div style="margin-top: 20px;">
+                <div style="color: #909399;font-size: 14px">上月营业额</div>
+                <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
+                <!-- <div>
+                  <span class="color-danger" style="font-size: 14px">-10%</span>
+                  <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
+                </div> -->
+              </div>
+              <div style="margin-top: 20px;">
+                <div style="color: #909399;font-size: 14px">昨日营业额</div>
+                <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowmoney }}</div>
+                <!-- <div>
+                  <span class="color-success" style="font-size: 14px">+10%</span>
+                  <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+                </div> -->
+              </div>        
+              <div style="margin-top: 20px;">
+                <div style="color: #909399;font-size: 14px">今年总营业额</div>
+                <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearmoney }}</div>
+                <!-- <div>
+                  <span class="color-success" style="font-size: 14px">+10%</span>
+                  <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+                </div> -->
+              </div>
+              <div style="margin-top: 20px;">
+                <!-- <div style="color: #909399;font-size: 14px">本周销售总额</div>
+                <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div> -->
+                <!-- <div>
+                  <span class="color-danger" style="font-size: 14px">-10%</span>
+                  <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
+                </div> -->
+              </div>
             </div>
-          </div> 
-        </el-col>
-      </el-row>
+          </el-col>
+          <el-col :span="6">
+            <div ref="echarts" style="margin-top: 30px;width: 600px;height:400px;"></div>
+          </el-col>
+        </el-row>
+      </div>
     </div>
-    <div class="statistics-layout">
-      <div class="layout-title">营业额统计</div>
-      <el-row>
-        <el-col :span="6">
-          <div style="padding: 20px">
-            <div style="margin-top: 20px;">
-              <div style="color: #909399;font-size: 14px">上月营业额</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
-              <!-- <div>
-                <span class="color-danger" style="font-size: 14px">-10%</span>
-                <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
-              </div> -->
-            </div>
-            <div style="margin-top: 20px;">
-              <div style="color: #909399;font-size: 14px">昨日营业额</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowmoney }}</div>
-              <!-- <div>
-                <span class="color-success" style="font-size: 14px">+10%</span>
-                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
-              </div> -->
-            </div>        
-            <div style="margin-top: 20px;">
-              <div style="color: #909399;font-size: 14px">今年总营业额</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearmoney }}</div>
-              <!-- <div>
-                <span class="color-success" style="font-size: 14px">+10%</span>
-                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
-              </div> -->
-            </div>
-            <div style="margin-top: 20px;">
-              <div style="color: #909399;font-size: 14px">本周销售总额</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div>
-              <!-- <div>
-                <span class="color-danger" style="font-size: 14px">-10%</span>
-                <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
-              </div> -->
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div ref="echarts" style="margin-top: 30px;width: 600px;height:400px;"></div>
-        </el-col>
-      </el-row>
-    </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -99,6 +108,7 @@
         tomorrowmoney: 0,
         lastmonthmoney: 0,
         lastyearmoney: 0,
+        isCollapse: true
       }
     },
     created(){
@@ -234,7 +244,17 @@
               }
           ]
         });
+      },
+      isC(){
+        this.isCollapse = !this.isCollapse
+        if (this.$store.state.isCollapse==false) {
+          this.$store.commit('increment')
+          alert(this.$store.state.isCollapse)
+        }else{
+          this.$store.state.isCollapse = false;
+        }
       }
+      
     }
   }
 </script>

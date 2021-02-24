@@ -35,7 +35,7 @@ import { default } from '../home/home.vue';
                             <el-form-item label="积分" prop="integral">
                                 <span>{{scope.row.integral}}</span>
                             </el-form-item>
-                            <el-form-item label="金额" prop="money">
+                            <el-form-item label="金额(元)" prop="money">
                                 <span>{{scope.row.money}}</span>
                             </el-form-item>
                         </el-form>
@@ -58,6 +58,7 @@ import { default } from '../home/home.vue';
             <el-table-column header-align="center" align="center" prop="email" label="邮箱" width="180" :show-overflow-tooltip="true"></el-table-column> -->
             <el-table-column header-align="center" align="center" sortable prop="startDate" label="创建日期" width="160">
                 <template slot-scope="scope">
+                    <span v-if="scope.row.startDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.startDate | fmtdate}}
                 </template>
             </el-table-column>
@@ -69,7 +70,7 @@ import { default } from '../home/home.vue';
                     </el-tooltip> 
                 </template>        
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="200">
+            <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="250">
                 <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" content="编辑" placement="top">
                         <el-button plain size="mini" type="primary" icon="el-icon-edit" circle @click="selectUserById(scope.row.userId)"></el-button>

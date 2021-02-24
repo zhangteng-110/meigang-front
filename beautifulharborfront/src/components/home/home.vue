@@ -9,10 +9,9 @@
                     </div>
                 </el-col>
                 <el-dropdown>
-                    <i class="el-icon-setting" style="margin-right: 15px"><span> {{username}}</span></i>
+                    <i class="el-icon-user-solid" style="margin-right: 15px"><span> {{username}}</span></i>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>查看</el-dropdown-item>
-                        <el-dropdown-item>新增</el-dropdown-item>
+                        <el-dropdown-item>个人</el-dropdown-item>
                         <el-dropdown-item><a href="#" @click.prevent="handleLogout()">退出</a></el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -21,9 +20,9 @@
         </el-header>
         <el-container>
             <!-- 侧边菜单导航栏 -->
-            <el-aside class="el-aside">
+            <el-aside class="el-aside" width="auto">
                 <!-- <h3>meigang</h3> -->
-                <el-menu :router="true" default-active="2" class="el-menu-vertical-demo" background-color="#7eb0d3" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose">
+                <el-menu :router="true" :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo" background-color="#7eb0d3" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose">
                     <el-menu-item index="index">
                         <i class="el-icon-s-home" style="color: black"></i>
                         <span slot="title">首页</span>
@@ -45,24 +44,55 @@
                         </template>
                         <el-menu-item-group>
                             <el-menu-item index="recharge">VIP充值记录</el-menu-item>
-                            <el-menu-item index="2">用户消费记录</el-menu-item>
+                            <el-menu-item index="consumption">客户消费记录</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
+                    <el-menu-item index="serviceitem">
+                        <i class="el-icon-s-order" style="color: black"></i>
+                        <span slot="title">服务项目管理</span>
+                    </el-menu-item>
+                        <!-- <i class="el-icon-s-fold" style="color: black"></i> -->
+                    
+                    
+                    <!-- <div style="position:fixed; bottom:0;right:0;height:20px;width:20px;">
+                        <i class="el-icon-s-fold" style="color: black"></i>
+                    </div> -->
+                    <!-- <div style="margin-top:560px,width:auto;">
+                        <el-row type="flex"  justify="center">
+                            <el-row><i class="el-icon-s-fold" style="color: black" @click="isC()"></i></el-row>
+                        </el-row>
+                    </div> -->
                 </el-menu>
+                
             </el-aside>
             <!-- 页面内容 -->
             <el-main class="el-main">
-                <router-view></router-view>                    
+            <!-- <el-scrollbar size="5" color="red"> -->
+                        
+                <router-view style="overflow-y:scroll;overflow-x:hidden;height:100%;">
+                </router-view>                    
+            <!-- </el-scrollbar> -->
             </el-main>
         </el-container>
     </el-container>
+    
 </template>
 <script>
     export default {
+        // props:{isCollapse:{
+        //     type:Boolean,
+        //     default:false
+        // }},
+        // watch:{
+        //     isCollapse:function(newVal,oldVal){
+        //         this.isCollapse = newVal;
+        //     }
+        // },
         data(){
             const staffName = localStorage.getItem('staffName');
             return{
-                username:staffName
+                username:staffName,
+                isCollapse: false
             }
         },
         beforeCreate(){
@@ -70,7 +100,7 @@
             if (!token) {
                 this.$router.push({name:'login'})
             }else{
-                this.$router.push({name:'index'})
+                // this.$router.push({name:'index'})
             }
 
         },
@@ -86,9 +116,9 @@
                 this.$message.success('退出成功');
                 this.$router.push({name:'login'});
             },
-            isC(){
-                this.isCollapse = !this.isCollapse
-            }
+            // isC(){
+            //     this.isCollapse = !this.isCollapse
+            // }
         }
     };
 </script>
@@ -106,12 +136,33 @@
     
     .el-aside {
         background-color: #c2cedb;
-        width: 170px;
+        /* width: 230px; */
+        height: 100%;
     }
 
     .el-main{
         background-color: #e9eef3;
     }
 
+    .el-menu-vertical-demo{
+        height: 100%;
+        width: 230px;
+    }
+
+    ::-webkit-scrollbar {
+    width: 10px;
+    height: 1px;
+    }
+    ::-webkit-scrollbar-thumb { 
+    border-radius: 5px;
+    background-color:#c2cedb;
+    }
+    ::-webkit-scrollbar-track { 
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    /* background: #ededed; */
+    border-radius: 5px;
+
+    }
+    
 </style>
 

@@ -31,15 +31,17 @@ import { default } from '../home/home.vue';
             <el-table-column header-align="center" align="center" prop="roleName" label="职位" width="70"></el-table-column>
             <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" width="130">
                 <template slot-scope="scope">
+                    <span v-if="scope.row.startDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.startDate | fmtdate}}
                 </template>
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="endDate" label="离职日期" width="130">
                 <template slot-scope="scope">
+                    <span v-if="scope.row.endDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.endDate | fmtdate}}
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="salary" label="薪资" width="80"></el-table-column>
+            <el-table-column header-align="center" align="center" prop="salary" label="薪资(元)" width="80"></el-table-column>
             <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="150">
                 <template slot-scope="scope">
                     <el-tooltip :content="scope.row.status==0 ?'上任':'离职'" class="item" effect="dark" placement="top">
