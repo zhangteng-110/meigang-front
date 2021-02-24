@@ -116,11 +116,11 @@ export default {
         },
         handleSizeChange(val) {
             this.pageSize = val;
-            this.getUserList();
+            this.getRecharge();
         },
         handleCurrentChange(val) {
             this.currentPage = val;
-            this.getUserList();
+            this.getRecharge();
         },
         search(){
             if (this.datetime == null) {
