@@ -69,7 +69,7 @@
             <el-main class="el-main">
             <!-- <el-scrollbar size="5" color="red"> -->
                         
-                <router-view style="overflow-y:scroll;overflow-x:hidden;height:100%;">
+                <router-view style="overflow-y:scroll;overflow-x:scroll;height:100%;">
                 </router-view>                    
             <!-- </el-scrollbar> -->
             </el-main>
@@ -100,7 +100,7 @@
             if (!token) {
                 this.$router.push({name:'login'})
             }else{
-                // this.$router.push({name:'index'})
+                this.$router.push({name:'index'})
             }
 
         },

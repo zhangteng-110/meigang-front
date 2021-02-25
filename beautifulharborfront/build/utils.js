@@ -23,11 +23,11 @@ exports.cssLoaders = function (options) {
   }
 
   const px2remLoader = {
-    loader: 'px2rem-loader',
-    options: {
-        remUnit: 192
-    }
-}
+      loader: 'px2rem-loader',
+      options: {
+          remUnit: 192
+      }
+  }
   
   const postcssLoader = {
     loader: 'postcss-loader',

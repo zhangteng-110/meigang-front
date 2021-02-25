@@ -10,8 +10,7 @@ import { default } from '../home/home.vue';
                 :format="{noChecked: '${total}',hasChecked: '${checked}/${total}'}"
                 :props="{key: 'projectId',label: 'projectName'}"
                 @change="handleChange"
-                :data="data"
-                >
+                :data="data">
                 <el-button type="primary" class="transfer-footer" slot="left-footer" size="small" round>操作</el-button>
             </el-transfer>
         </div>
@@ -38,7 +37,7 @@ export default {
                     
                 }else{ 
                     this.data = result.data;
-                    // this.value = result.data;
+                    this.value = result.data;
                 }
             }).catch((result) => {});
         }
