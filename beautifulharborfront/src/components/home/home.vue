@@ -100,7 +100,7 @@
             if (!token) {
                 this.$router.push({name:'login'})
             }else{
-                this.$router.push({name:'index'})
+                // this.$router.push({name:'index'})
             }
 
         },
