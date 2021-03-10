@@ -1,56 +1,40 @@
 <template>
-    <el-container class="el-container">
-        <!-- 头部菜单栏 -->
-        <el-header class="el-header" style="text-align: right; font-size: 12px">
-            <el-row>
-                <el-col :span="4">
-                    <div>
-                        <img style="width: 200px; height: 60px" src="@/assets/images/index_logo.png">
-                    </div>
-                </el-col>
-                <el-dropdown>
-                    <i class="el-icon-user-solid" style="margin-right: 15px"><span> {{username}}</span></i>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>个人</el-dropdown-item>
-                        <el-dropdown-item><a href="#" @click.prevent="handleLogout()">退出</a></el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                
-            </el-row>
-        </el-header>
-        <el-container>
-            <!-- 侧边菜单导航栏 -->
-            <el-aside class="el-aside" width="auto">
-                <!-- <h3>meigang</h3> -->
-                <el-menu :router="true" :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo" background-color="#7eb0d3" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose">
-                    <el-menu-item index="index">
-                        <i class="el-icon-s-home" style="color: black"></i>
-                        <span slot="title">首页</span>
-                    </el-menu-item>
-                    <el-submenu index="2">
-                        <template slot="title">
-                            <i class="el-icon-s-custom" style="color: black"></i>
-                            <span>用户管理</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="users">客户信息</el-menu-item>
-                            <el-menu-item index="staff">员工信息</el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-                    <el-submenu index="3">
-                        <template slot="title">
-                            <i class="el-icon-money" style="color: black"></i>
-                            <span>交易信息管理</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="recharge">VIP充值记录</el-menu-item>
-                            <el-menu-item index="consumption">客户消费记录</el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-                    <el-menu-item index="serviceitem">
-                        <i class="el-icon-s-order" style="color: black"></i>
-                        <span slot="title">服务项目管理</span>
-                    </el-menu-item>
+    <el-container class="el-container"> 
+        <!-- 侧边菜单导航栏 -->
+        <el-aside class="el-aside" width="auto">
+            <!-- <h3>meigang</h3> -->
+            <el-menu :router="true" :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo" background-color="#7eb0d3" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose">        
+                <div style="text-align: center;height: 70px;">
+                    <img style="width: 180px; height: 60px;margin-top: 10px;" src="@/assets/images/index_logo.png">
+                </div>
+                <el-menu-item index="index">
+                    <i class="el-icon-s-home" style="color: black"></i>
+                    <span slot="title">首页</span>
+                </el-menu-item>
+                <el-submenu index="2">
+                    <template slot="title">
+                        <i class="el-icon-s-custom" style="color: black"></i>
+                        <span>用户管理</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item index="users">客户信息</el-menu-item>
+                        <el-menu-item index="staff">员工信息</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="3">
+                    <template slot="title">
+                        <i class="el-icon-money" style="color: black"></i>
+                        <span>交易信息管理</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item index="recharge">VIP充值记录</el-menu-item>
+                        <el-menu-item index="consumption">客户消费记录</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-menu-item index="serviceitem">
+                    <i class="el-icon-s-order" style="color: black"></i>
+                    <span slot="title">服务项目管理</span>
+                </el-menu-item>
                         <!-- <i class="el-icon-s-fold" style="color: black"></i> -->
                     
                     
@@ -62,38 +46,49 @@
                             <el-row><i class="el-icon-s-fold" style="color: black" @click="isC()"></i></el-row>
                         </el-row>
                     </div> -->
-                </el-menu>
-                
-            </el-aside>
-            <!-- 页面内容 -->
-            <el-main class="el-main">
+            </el-menu>
+        </el-aside>
+    <el-container>
+    <!-- 头部菜单栏 -->
+        <el-header class="el-header" style="text-align: right; font-size: 12px">
+            <el-row>
+                <el-col :span="0.5">
+                    <span v-if="this.isCollapse == false"><i style="font-size:20px" class="el-icon-s-fold" @click="menuOpen"></i></span>
+                    <span v-if="this.isCollapse == true"><i style="font-size:20px" class="el-icon-s-unfold" @click="menuOpen"></i></span>
+                    <!-- <el-radio-group v-model="menuOpen" style="margin-bottom: 20px;">
+                        <el-radio-button :label="false"><i class="el-icon-s-fold"></i></el-radio-button>
+                    </el-radio-group> -->
+                </el-col>
+                <el-dropdown>
+                    <i class="el-icon-user-solid" style="margin-right: 15px"><span> {{username}}</span></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>个人</el-dropdown-item>
+                        <el-dropdown-item><a href="#" @click.prevent="handleLogout()">退出</a></el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>                
+            </el-row>
+        </el-header>
+        <!-- 页面内容 -->
+        <el-main class="el-main">
             <!-- <el-scrollbar size="5" color="red"> -->
-                        
-                <router-view style="overflow-y:scroll;overflow-x:scroll;height:100%;">
-                </router-view>                    
+            <router-view style="overflow-y:scroll;overflow-x:scroll;height:100%;">
+                    
+            </router-view>                    
             <!-- </el-scrollbar> -->
-            </el-main>
-        </el-container>
+        </el-main>
     </el-container>
+    
+</el-container>
     
 </template>
 <script>
     export default {
-        // props:{isCollapse:{
-        //     type:Boolean,
-        //     default:false
-        // }},
-        // watch:{
-        //     isCollapse:function(newVal,oldVal){
-        //         this.isCollapse = newVal;
-        //     }
-        // },
         data(){
             const staffName = localStorage.getItem('staffName');
             return{
                 username:staffName,
-                isCollapse: false
-            }
+                isCollapse: false,
+            };
         },
         beforeCreate(){
             const token = localStorage.getItem('token');
@@ -116,12 +111,13 @@
                 this.$message.success('退出成功');
                 this.$router.push({name:'login'});
             },
-            // isC(){
-            //     this.isCollapse = !this.isCollapse
-            // }
+            menuOpen(){
+                this.isCollapse = !this.isCollapse
+            }
         }
     };
 </script>
+
 <style>
 
     .el-container{
@@ -135,33 +131,34 @@
     }
     
     .el-aside {
-        background-color: #c2cedb;
+        background-color: #7eb0d3;
         /* width: 230px; */
         height: 100%;
+        /* min-height: calc(100vh) ; */
     }
 
     .el-main{
         background-color: #e9eef3;
     }
 
-    .el-menu-vertical-demo{
-        height: 100%;
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
         width: 230px;
+        /* min-height: 100%; */
+        height: 100%;   
     }
 
     ::-webkit-scrollbar {
-    width: 10px;
-    height: 1px;
+        width: 10px;
+        height: 1px;
     }
     ::-webkit-scrollbar-thumb { 
-    border-radius: 5px;
-    background-color:#c2cedb;
+        border-radius: 5px;
+        background-color:#c2cedb;
     }
     ::-webkit-scrollbar-track { 
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-    /* background: #ededed; */
-    border-radius: 5px;
-
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        /* background: #ededed; */
+        border-radius: 5px;
     }
     
 </style>

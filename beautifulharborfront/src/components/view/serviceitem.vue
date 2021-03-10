@@ -13,7 +13,7 @@ import { default } from '../home/home.vue';
                 @left-check-change="handleWHLeftChange"
                 :data="data">
                 <el-button type="primary" class="transfer-footer" slot="left-footer" size="small" round @click="addProjectItem">新增</el-button>
-                <el-button type="primary" class="transfer-footer" slot="left-footer" size="small" round @click="changeProjectItem">修改</el-button>
+                <el-button type="primary" class="transfer-footer" slot="left-footer" size="small" round @click="changeProjectItem">编辑</el-button>
                 <el-button type="danger" class="transfer-footer" slot="left-footer" size="small" round @click="deleteProjectItem">删除</el-button>
             </el-transfer>
             <el-dialog title="新增服务项目" width="470px" :visible.sync="dialogFormVisibleAdd" @close='cancel()' close-on-press-escape>
@@ -149,14 +149,20 @@ export default {
         },
         deleteProjectItem(){
             console.log(this.projectIds)
-            this.$axios.post('http://10.6.11.82:3000/meigang/service/deleteProjectById',{projectIds:this.projectIds}).then((result) => {
-                if (result.data.errorCode == '200') {
-                    this.getProjectList();
-                }else{ 
-                    this.getProjectList();
-                    this.$message.error(result.data.errorMessage);
-                }
-            }).catch((result) => {});
+            if (this.projectIds.length > 1 || this.projectIds.length == 0) {
+                this.$message.error("请选择想要删除的服务项目");
+                this.projectIds = [];
+                this.items = 0;
+            }else{
+                this.$axios.post('http://10.6.11.82:3000/meigang/service/deleteProjectById',{projectIds:this.projectIds}).then((result) => {
+                    if (result.data.errorCode == '200') {
+                        this.getProjectList();
+                    }else{ 
+                        this.getProjectList();
+                        this.$message.error(result.data.errorMessage);
+                    }
+                }).catch((result) => {});
+            }
         }
         ,handleWHLeftChange(value, direction){
             console.log(value)
