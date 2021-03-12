@@ -1,17 +1,17 @@
 <template>
     <el-container class="el-container"> 
         <!-- 侧边菜单导航栏 -->
-        <el-aside class="el-aside" width="auto">
+        <el-aside class="el-aside" width="auto" style="min-width:60px;">
             <!-- <h3>meigang</h3> -->
             <el-menu :router="true" :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo" background-color="#7eb0d3" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose">        
                 <div style="text-align: center;height: 70px;">
-                    <img style="width: 180px; height: 60px;margin-top: 10px;" src="@/assets/images/index_logo.png">
+                    <img style="width: 180px; height: 40px;margin-top: 10px;" src="@/assets/images/index_logo.png">
                 </div>
-                <el-menu-item index="index">
+                <el-menu-item index="index" style="min-width:60px">
                     <i class="el-icon-s-home" style="color: black"></i>
                     <span slot="title">首页</span>
                 </el-menu-item>
-                <el-submenu index="2">
+                <el-submenu index="2" style="min-width:60px">
                     <template slot="title">
                         <i class="el-icon-s-custom" style="color: black"></i>
                         <span>用户管理</span>
@@ -21,7 +21,7 @@
                         <el-menu-item index="staff">员工信息</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="3">
+                <el-submenu index="3" style="min-width:60px">
                     <template slot="title">
                         <i class="el-icon-money" style="color: black"></i>
                         <span>交易信息管理</span>
@@ -31,11 +31,11 @@
                         <el-menu-item index="consumption">客户消费记录</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
-                <el-menu-item index="serviceitem">
+                <el-menu-item index="serviceitem" style="min-width:60px">
                     <i class="el-icon-s-order" style="color: black"></i>
                     <span slot="title">服务项目管理</span>
                 </el-menu-item>
-                <el-menu-item index="storefront">
+                <el-menu-item index="storefront" style="min-width:60px">
                     <i class="el-icon-s-shop" style="color: black"></i>
                     <span slot="title">店铺管理</span>
                 </el-menu-item>
@@ -128,7 +128,7 @@
     .el-header {
         background-color: #d3ecf0;
         color: #333;
-        line-height: 60px;
+        line-height: 80px;
     }
     
     .el-aside {
@@ -137,13 +137,17 @@
         height: 100%;
         /* min-height: calc(100vh) ; */
     }
+    
+    .el-menu{
+        border-right:solid 0px;
+    }
 
     .el-main{
         background-color: #e9eef3;
     }
 
     .el-menu-vertical-demo:not(.el-menu--collapse) {
-        width: 230px;
+        width: 250px;
         /* min-height: 100%; */
         height: 100%;   
     }

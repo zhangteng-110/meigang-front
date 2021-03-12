@@ -14,35 +14,35 @@ import { default } from '../home/home.vue';
             </el-col>
         </el-row>
         <el-table :data="staffList" style="width: 100%" :header-cell-style="{background:'#c2cedb',color:'black'}" :default-sort = "{prop: 'startDate'}">
-            <el-table-column header-align="center" align="center" prop="staffId" label="ID" width="60"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="staffName" label="姓名" width="70"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="staffSex" label="性别" width="60">
+            <el-table-column header-align="center" align="center" prop="staffId" label="ID" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="staffName" label="姓名" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="staffSex" label="性别" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.staffSex === 'MAN'">男</span>
                     <span v-if="scope.row.staffSex === 'WEMAN'">女</span>
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="staffCode" label="证件号" width="180">
+            <el-table-column header-align="center" align="center" prop="staffCode" label="证件号" width="180px">
                 <template slot-scope="scope">
                     <span style="color:#910c1e">{{scope.row.staffCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="phone" label="手机号" width="140"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="roleName" label="职位" width="70"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" width="130">
+            <el-table-column header-align="center" align="center" prop="phone" label="手机号" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="roleName" label="职位" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.startDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.startDate | fmtdate}}
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="endDate" label="离职日期" width="130">
+            <el-table-column header-align="center" align="center" prop="endDate" label="离职日期">
                 <template slot-scope="scope">
                     <span v-if="scope.row.endDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.endDate | fmtdate}}
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="salary" label="薪资(元)" width="80"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="150">
+            <el-table-column header-align="center" align="center" prop="salary" label="薪资(元)" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="180px">
                 <template slot-scope="scope">
                     <el-tooltip :content="scope.row.status==0 ?'上任':'离职'" class="item" effect="dark" placement="top">
                         <el-switch @change="changeStatus(scope.row.status,scope.row.staffId)" v-model="scope.row.status" :active-value="1" :inactive-value="0" active-color="#13ce66" inactive-color="#ff4949"></el-switch>

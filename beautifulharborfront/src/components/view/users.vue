@@ -41,9 +41,9 @@ import { default } from '../home/home.vue';
                         </el-form>
                     </template>
                 </el-table-column>
-            <el-table-column header-align="center" align="center" prop="userId" label="ID" width="60"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="realName" label="姓名" width="100"></el-table-column>
-            <el-table-column header-align="center" align="center" prop="userSex" label="性别" width="80">
+            <el-table-column header-align="center" align="center" prop="userId" label="ID" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="realName" label="姓名" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="userSex" label="性别" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.userSex === 'MAN'">男</span>
                     <span v-if="scope.row.userSex === 'WEMAN'">女</span>
@@ -56,14 +56,14 @@ import { default } from '../home/home.vue';
             </el-table-column>
             <!-- <el-table-column header-align="center" align="center" prop="phone" label="手机号" width="140"></el-table-column>
             <el-table-column header-align="center" align="center" prop="email" label="邮箱" width="180" :show-overflow-tooltip="true"></el-table-column> -->
-            <el-table-column header-align="center" align="center" sortable prop="startDate" label="创建日期" width="160">
+            <el-table-column header-align="center" align="center" sortable prop="startDate" label="创建日期" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.startDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.startDate | fmtdate}}
                 </template>
             </el-table-column>
             <!-- <el-table-column header-align="center" align="center" prop="cardNumber" label="卡号" width="140"></el-table-column> -->
-            <el-table-column header-align="center" align="center" prop="isVip" label="VIP状态" width="100">
+            <el-table-column header-align="center" align="center" prop="isVip" label="VIP状态" >
                 <template slot-scope="scope">
                     <el-tooltip :content="'Switch value: ' + scope.row.isVip" placement="top">
                         <el-switch @change="changeStatus(scope.row.isVip,scope.row.userCode,scope.row.money)" v-model="scope.row.isVip" :active-value="1" :inactive-value="0" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
