@@ -35,6 +35,10 @@
                     <i class="el-icon-s-order" style="color: black"></i>
                     <span slot="title">服务项目管理</span>
                 </el-menu-item>
+                <el-menu-item index="storefront">
+                    <i class="el-icon-s-shop" style="color: black"></i>
+                    <span slot="title">店铺管理</span>
+                </el-menu-item>
                         <!-- <i class="el-icon-s-fold" style="color: black"></i> -->
                     
                     
@@ -55,9 +59,6 @@
                 <el-col :span="0.5">
                     <span v-if="this.isCollapse == false"><i style="font-size:20px" class="el-icon-s-fold" @click="menuOpen"></i></span>
                     <span v-if="this.isCollapse == true"><i style="font-size:20px" class="el-icon-s-unfold" @click="menuOpen"></i></span>
-                    <!-- <el-radio-group v-model="menuOpen" style="margin-bottom: 20px;">
-                        <el-radio-button :label="false"><i class="el-icon-s-fold"></i></el-radio-button>
-                    </el-radio-group> -->
                 </el-col>
                 <el-dropdown>
                     <i class="el-icon-user-solid" style="margin-right: 15px"><span> {{username}}</span></i>

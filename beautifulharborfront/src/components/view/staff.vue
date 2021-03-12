@@ -81,9 +81,6 @@ import { default } from '../home/home.vue';
                 <el-form-item label="手机号" prop="phone" :label-width="formLabelWidth">
                     <el-input clearable size="medium" v-model="staff.phone" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>
-                <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
-                    <el-input clearable size="medium" v-model="staff.salary" autocomplete="off" style ="width:230px;"></el-input>
-                </el-form-item>
                 <el-form-item label="职位角色" prop="roleId" :label-width="formLabelWidth">
                     <el-select v-model="staff.roleId" clearable placeholder="请选择">
                         <el-option
@@ -91,6 +88,19 @@ import { default } from '../home/home.vue';
                         :key="item.roleId"
                         :label="item.roleName"
                         :value="item.roleId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
+                    <el-input clearable size="medium" v-model="staff.salary" autocomplete="off" style ="width:230px;"></el-input>
+                </el-form-item>
+                <el-form-item label="工作店铺" prop="storefrontId" :label-width="formLabelWidth">
+                    <el-select v-model="staff.storefrontId" clearable placeholder="请选择">
+                        <el-option
+                        v-for="item in storefrontList"
+                        :key="item.storefrontId"
+                        :label="item.storefrontName"
+                        :value="item.storefrontId">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -115,9 +125,6 @@ import { default } from '../home/home.vue';
                 <el-form-item label="手机号" prop="phone" :label-width="formLabelWidth">
                     <el-input clearable size="medium" v-model="staffdetail.phone" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>
-                <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
-                    <el-input clearable size="medium" v-model="staffdetail.salary" autocomplete="off" style ="width:230px;"></el-input>
-                </el-form-item>
                 <el-form-item label="职位角色" prop="roleId" :label-width="formLabelWidth">
                     <el-select v-model="staffdetail.roleId" clearable placeholder="请选择">
                         <el-option
@@ -125,6 +132,19 @@ import { default } from '../home/home.vue';
                         :key="item.roleId"
                         :label="item.roleName"
                         :value="item.roleId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="薪资" prop="salary" :label-width="formLabelWidth">
+                    <el-input clearable size="medium" v-model="staffdetail.salary" autocomplete="off" style ="width:230px;"></el-input>
+                </el-form-item>  
+                <el-form-item label="工作店铺" prop="storefrontId" :label-width="formLabelWidth">
+                    <el-select v-model="staffdetail.storefrontId" clearable placeholder="请选择">
+                        <el-option
+                        v-for="item in storefrontList"
+                        :key="item.storefrontId"
+                        :label="item.storefrontName"
+                        :value="item.storefrontId">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -155,6 +175,7 @@ export default {
             query: '',
             staffList: [],
             roleList: '',
+            storefrontList: '',
             // 分页参数
             pageSize: 10,
             total: 0,
@@ -175,6 +196,10 @@ export default {
                 staffsex: '',
                 salary: ''
             },
+            storefront: {
+                storefrontName: '',
+                storefrontId: ''
+            },
             rules: {
                 staffname: [
                     { required: true, message: '请输入员工姓名', trigger: 'blur' },
@@ -192,6 +217,7 @@ export default {
     created(){
         this.getUserList();
         this.getRoleList();
+        this.getStorefrontList();
     },
     methods:{
         getUserList(){
@@ -227,7 +253,8 @@ export default {
                 phone:this.staff.phone,
                 staffSex:this.staff.staffsex,
                 salary:this.staff.salary,
-                staffPositionId:this.staff.roleId}).then((result) => {
+                staffPositionId:this.staff.roleId,
+                storefrontId:this.staff.storefrontId}).then((result) => {
                 if (result.data == null) {
                     
                 }else{
@@ -311,7 +338,8 @@ export default {
                 phone:this.staffdetail.phone,
                 staffSex:this.staffdetail.staffSex,
                 salary:this.staffdetail.salary,
-                staffPositionId:this.staffdetail.roleId}).then((result) => {
+                staffPositionId:this.staffdetail.roleId,
+                storefrontId:this.staffdetail.storefrontId}).then((result) => {
                 if (result.data == null) {
                     
                 }else{
@@ -334,6 +362,19 @@ export default {
             }).catch((result) => {
                 this.$message.error('网络异常');
             }); 
+        },
+        getStorefrontList(){
+            this.$axios.get('http://10.6.11.82:3000/meigang/storefront/getStorefront').then((result) => {
+                if (result.data == null) {
+                    
+                }else{
+                    this.storefrontList = result.data;
+                    
+                }
+            }).catch((result) => {
+                // this.loading = false
+
+            });
         },
         
     }

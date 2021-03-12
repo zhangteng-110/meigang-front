@@ -44,7 +44,7 @@ import { default } from '../home/home.vue';
                 </el-form>
                 <div slot="footer" class="dialog-footer" align="center">
                     <el-button @click="changeCancel()">取 消</el-button>
-                    <el-button type="primary" @click="addServiceItem()">确 定</el-button>
+                    <el-button type="primary" @click="updateServiceitem()">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -163,8 +163,8 @@ export default {
                     }
                 }).catch((result) => {});
             }
-        }
-        ,handleWHLeftChange(value, direction){
+        },
+        handleWHLeftChange(value, direction){
             console.log(value)
             if (value.length > 1) {
                 this.projectIds = value;
@@ -173,6 +173,18 @@ export default {
                 this.items = value;
                 this.projectIds = value;
             }
+        },
+        updateServiceitem(){
+            this.$axios.post('http://10.6.11.82:3000/meigang/service/updateNameById',{projectId:this.item.projectId,projectName:this.item.projectName,sex:this.item.sex}).then((result) => {
+                    if (result.data.errorCode == '200') {
+                        this.getProjectList();
+                        this.dialogFormVisibleChange = false;
+                    }else{ 
+                        this.getProjectList();
+                        this.$message.error(result.data.errorMessage);
+                        this.dialogFormVisibleChange = false;
+                    }
+                }).catch((result) => {});
         }
     }
 }

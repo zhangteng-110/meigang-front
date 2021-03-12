@@ -34,7 +34,7 @@
                         <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
                       </el-col>
                       <el-col :span="9" >
-                        <div ref="echartsNumber" style="width: 350px;height:200px;"></div>
+                        <div ref="echartsNumber" style="width: 400px;height:200px;"></div>
                       </el-col>
                     </el-row>
                     
