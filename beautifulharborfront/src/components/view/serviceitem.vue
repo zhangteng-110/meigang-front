@@ -84,7 +84,7 @@ export default {
             }
             this.$axios.post('http://10.6.11.82:3000/meigang/service/updateStatusById',{projectIds:movedKeys,isClose:isClose}).then((result) => {
                 if (result.data.errorCode == '200') {
-                    this.getProjectList();
+                    // this.getProjectList();
                 }else{ 
                     this.getProjectList();
                     this.$message.error(result.data.errorMessage);

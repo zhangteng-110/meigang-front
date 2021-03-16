@@ -9,7 +9,7 @@ import { default } from '../home/home.vue';
                 :titles="['未营业店铺', '已营业店铺']"
                 :format="{noChecked: '${total}',hasChecked: '${checked}/${total}'}"
                 :props="{key: 'storefrontId',label: 'storefrontName'}"
-                @change="handleChange"
+                @change="updateStatusById"
                 @left-check-change="handleWHLeftChange"
                 :data="data">
                 <el-button type="primary" class="transfer-footer" slot="left-footer" size="small" round @click="insertStorefront">新增</el-button>
@@ -22,7 +22,15 @@ import { default } from '../home/home.vue';
                         <el-input clearable size="medium" v-model="storefront.storefrontName" autocomplete="off" style ="width:230px;"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺地址" prop="storefrontAddress" :label-width="formLabelWidth">
-                        <el-input clearable size="medium" v-model="storefront.storefrontAddress" autocomplete="off" style ="width:230px;"></el-input>
+                        <el-cascader
+                        v-model="selectedOptions"
+                        :options="options"
+                        size="medium"
+                        :props="{ expandTrigger: 'hover' }"
+                        @change="handleChange"></el-cascader>
+                    </el-form-item>
+                    <el-form-item label="详细地址" prop="detailedAddress" :label-width="formLabelWidth">
+                        <el-input clearable size="medium" v-model="storefront.detailedAddress" autocomplete="off" style ="width:230px;"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer" align="center">
@@ -37,7 +45,16 @@ import { default } from '../home/home.vue';
                         <el-input clearable size="medium" v-model="item.storefrontName" autocomplete="off" style ="width:230px;"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺地址" prop="storefrontAddress" :label-width="formLabelWidth">
-                        <el-input clearable size="medium" v-model="item.storefrontAddress" autocomplete="off" style ="width:230px;"></el-input>
+                        <el-cascader
+                        v-model="selectedOptions"
+                        :options="options"
+                        size="medium"
+                        :props="{ expandTrigger: 'hover' }"
+                        @change="handleChange">                            
+                        </el-cascader>
+                    </el-form-item>
+                    <el-form-item label="详细地址" prop="detailedAddress" :label-width="formLabelWidth">
+                        <el-input clearable size="medium" v-model="item.detailedAddress" autocomplete="off" style ="width:230px;"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer" align="center">
@@ -49,6 +66,7 @@ import { default } from '../home/home.vue';
     </el-card>
 </template>
 <script>
+import { regionData, CodeToText } from "element-china-area-data";
 export default {
     data() {
         return {
@@ -70,13 +88,16 @@ export default {
                     { required: true, message: '请输入店铺地址', trigger: 'blur' },
                 ]
             },
+            options: regionData,
+            selectedOptions: []
         };
     },
     created(){
         this.getAllStorefront();
     },
     methods: {
-        handleChange(value, direction, movedKeys) {
+        updateStatusById(value, direction, movedKeys) {
+            console.log(direction)
             var isClose;
             if (direction == 'right') {
                 isClose = '0';
@@ -85,7 +106,7 @@ export default {
             }
             this.$axios.post('http://10.6.11.82:3000/meigang/storefront/updateStatusById',{storefrontIds:movedKeys,status:isClose}).then((result) => {
                 if (result.data.errorCode == '200') {
-                    this.getAllStorefront();
+                    // this.getAllStorefront();
                 }else{ 
                     this.getAllStorefront();
                     this.$message.error(result.data.errorMessage);
@@ -104,6 +125,7 @@ export default {
                             this.value.push(element.storefrontId);
                         }
                     });
+                    // this.$forceUpdate();
                 }
             }).catch((result) => {});
         },
@@ -117,18 +139,23 @@ export default {
             this.$refs["addForm"].clearValidate();
         },
         addStorefront(){
-            this.$axios.post('http://10.6.11.82:3000/meigang/storefront/addStorefront',{storefrontName:this.storefront.storefrontName,storefrontAddress:this.storefront.storefrontAddress}).then((result) => {
+            // console.log(this.storefront.storefrontAddress)
+            var addressCode = '';
+            addressCode = this.selectedOptions.join(",");
+            this.$axios.post('http://10.6.11.82:3000/meigang/storefront/addStorefront',{storefrontName:this.storefront.storefrontName,storefrontAddress:this.storefront.storefrontAddress,detailedAddress:this.storefront.detailedAddress,addressCode:addressCode}).then((result) => {
                 if (result.data.errorCode == '200') {
+                    this.selectedOptions = [];
                     this.getAllStorefront();
                     this.dialogFormVisibleAdd = false;
                 }else{ 
                     this.getAllStorefront();
                     this.$message.error(result.data.errorMessage);
                 }
+                this.storefront.storefrontAddress = '';
             }).catch((result) => {});
         },
         changeStorefrontItem(){
-            console.log(this.storefrontIds.length+"------"+this.items)
+            // console.log(this.storefrontIds.length+"------"+this.items)
             if (this.storefrontIds.length > 1 || this.storefrontIds.length == 0) {
                 this.$message.error("请选择一项");
                 this.storefrontIds = [];
@@ -136,7 +163,8 @@ export default {
             }else{
                 this.dialogFormVisibleChange = true;
                 this.$axios.post('http://10.6.11.82:3000/meigang/storefront/getStorefrontById',{storefrontId:Number(this.items)}).then((result) => {
-                    this.item = result.data
+                    this.item = result.data;                    
+                    this.selectedOptions = this.item.addressCode.split(',');                      
                 }).catch((result) => {
                     this.$message.error("请重试");
                 });
@@ -149,7 +177,7 @@ export default {
             this.$refs["changeForm"].clearValidate();
         },
         deleteStorefrontItem(){
-            console.log(this.storefrontIds)
+            // console.log(this.storefrontIds)
             if (this.storefrontIds.length > 1 || this.storefrontIds.length == 0) {
                 this.$message.error("请选择想要删除的店铺");
                 this.storefrontIds = [];
@@ -169,15 +197,19 @@ export default {
             console.log(value)
             if (value.length > 1) {
                 this.storefrontIds = value;
-                console.log(this.storefrontIds+"*****")
+                // console.log(this.storefrontIds+"*****")
             } else {
                 this.items = value;
                 this.storefrontIds = value;
             }
         },
         updateStorefront(){
-            this.$axios.post('http://10.6.11.82:3000/meigang/storefront/updateStorefrontById',{storefrontId:this.item.storefrontId,storefrontName:this.item.storefrontName,storefrontAddress:this.item.storefrontAddress}).then((result) => {
+            var addressCode = '';
+            addressCode = this.selectedOptions.join(",");
+            console.log(addressCode)
+            this.$axios.post('http://10.6.11.82:3000/meigang/storefront/updateStorefrontById',{storefrontId:this.item.storefrontId,storefrontName:this.item.storefrontName,storefrontAddress:this.item.storefrontAddress,detailedAddress:this.item.detailedAddress,addressCode:addressCode}).then((result) => {
                     if (result.data.errorCode == '200') {
+                        this.selectedOptions = [];
                         this.getAllStorefront();
                         this.dialogFormVisibleChange = false;
                     }else{ 
@@ -186,6 +218,14 @@ export default {
                         this.dialogFormVisibleChange = false;
                     }
                 }).catch((result) => {});
+        },
+        handleChange() {
+            var loc = "";
+            for (let i = 0; i < this.selectedOptions.length; i++) {
+                loc += CodeToText[this.selectedOptions[i]];
+            }
+            this.storefront.storefrontAddress = loc;
+            this.item.storefrontAddress = loc
         }
     }
 }

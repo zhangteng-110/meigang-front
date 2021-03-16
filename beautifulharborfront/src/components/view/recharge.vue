@@ -30,6 +30,7 @@ import { default } from '../home/home.vue';
         </el-row>
         <el-table :data="rechargeList" style="width: 100%" :header-cell-style="{background:'#c2cedb',color:'black'}" :default-sort = "{prop: 'userId'}">
             <el-table-column header-align="center" align="center" prop="transactionId" label="交易ID" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="realName" label="客户姓名" ></el-table-column>
             <el-table-column header-align="center" align="center" sortable prop="transactionMoney" label="充值金额(元)" ></el-table-column>
             <el-table-column header-align="center" align="center" sortable prop="transactionDate" label="充值日期" >
                 <template slot-scope="scope">
@@ -37,7 +38,7 @@ import { default } from '../home/home.vue';
                     {{scope.row.transactionDate | fmtdatetime}}
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="realName" label="客户姓名" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="transactionStorefront" label="消费店铺" ></el-table-column>
             <el-table-column header-align="center" align="center" prop="usercode" label="操作" >
             </el-table-column>
         </el-table>

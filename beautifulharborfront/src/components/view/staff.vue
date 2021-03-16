@@ -27,9 +27,9 @@ import { default } from '../home/home.vue';
                     <span style="color:#910c1e">{{scope.row.staffCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="phone" label="手机号" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="phone" label="手机号" width="130px"></el-table-column>
             <el-table-column header-align="center" align="center" prop="roleName" label="职位" ></el-table-column>
-            <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" >
+            <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" width="130px">
                 <template slot-scope="scope">
                     <span v-if="scope.row.startDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.startDate | fmtdate}}
@@ -42,6 +42,7 @@ import { default } from '../home/home.vue';
                 </template>
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="salary" label="薪资(元)" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="storefrontName" label="就职门店" width="100px"></el-table-column>
             <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="180px">
                 <template slot-scope="scope">
                     <el-tooltip :content="scope.row.status==0 ?'上任':'离职'" class="item" effect="dark" placement="top">

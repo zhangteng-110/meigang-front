@@ -193,6 +193,16 @@ import { default } from '../home/home.vue';
                             </el-option>
                         </el-option-group>
                     </el-select>    
+                </el-form-item>
+                <el-form-item label="消费店铺" prop="storefrontId" :label-width="formLabelWidth">
+                    <el-select v-model="store.storefrontName" placeholder="请选择">
+                        <el-option
+                            v-for="item in store"
+                            :key="item.storefrontId"
+                            :label="item.storefrontName"
+                            :value="item.storefrontName">
+                        </el-option>
+                    </el-select>    
                 </el-form-item>        
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -214,7 +224,17 @@ import { default } from '../home/home.vue';
                 </el-form-item>  
                 <el-form-item label="充值金额" prop="money" :label-width="formLabelWidth">
                     <el-input-number v-model="num" size="medium" :precision="1" :step="1" :min="0"></el-input-number>
-                </el-form-item>        
+                </el-form-item>
+                <el-form-item label="消费店铺" prop="storefrontId" :label-width="formLabelWidth">
+                    <el-select v-model="store.storefrontName" placeholder="请选择">
+                        <el-option
+                            v-for="item in store"
+                            :key="item.storefrontId"
+                            :label="item.storefrontName"
+                            :value="item.storefrontName">
+                        </el-option>
+                    </el-select>    
+                </el-form-item>         
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="rechargeCancel()">取 消</el-button>
@@ -291,7 +311,8 @@ export default {
                 project: [],
             }],
             // 控制用户充值框参数
-            dialogFormVisibleRecharge: false
+            dialogFormVisibleRecharge: false,
+            store:[]
         }
     },
     created(){
@@ -302,6 +323,7 @@ export default {
         },60000)
         _this.getManProjectList();
         _this.getWemanProjectList();
+        _this.getAllStorefront();
     },
     methods:{
         getUserList(){
@@ -584,7 +606,8 @@ export default {
                 userId:this.userdetail.userId,
                 userCode:this.userdetail.userCode,
                 money:this.num,
-                projectId:this.userdetail.projectId}).then((result) => {
+                projectId:this.userdetail.projectId,
+                consumptionStorefront:this.store.storefrontName}).then((result) => {
                 if (result.data == null) {
                     
                 }else{
@@ -600,7 +623,8 @@ export default {
             this.$axios.post('http://10.6.11.82:3000/meigang/user/recharge', {
                 userId:this.userdetail.userId,
                 userCode:this.userdetail.userCode,
-                money:this.num}).then((result) => {
+                money:this.num,
+                consumptionStorefront:this.store.storefrontName}).then((result) => {
                 if (result.data == null) {
                     
                 }else{
@@ -632,6 +656,17 @@ export default {
             }).catch((result) => {
             });
         },
+        getAllStorefront(){
+            this.$axios.get('http://10.6.11.82:3000/meigang/storefront/getAllStorefront').then((result) => {
+                if (result.data == null) {
+                    
+                }else{ 
+                    this.store = result.data;
+                    
+                    // this.$forceUpdate();
+                }
+            }).catch((result) => {});
+        }
     }
 }
 </script>
@@ -669,6 +704,6 @@ export default {
         color:#99a9bf;
     }
     .input-with-selects .el-select .el-input {
-        width: 105px;
+        width: 115px;
     }
 </style>

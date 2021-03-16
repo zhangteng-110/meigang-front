@@ -29,11 +29,11 @@
                   </el-col>
                   <el-col :span="16">
                     <el-row>
-                      <el-col style="text-align:center;margin-top: 20px;margin-bottom: 20px" :span="7">        
+                      <el-col style="text-align:center;margin-top: 20px;margin-bottom: 20px" :span="6">        
                         <el-progress :width="150" type="circle" :percentage="parseInt((this.uservipnum/this.usernumber)*100)" v-if="parseInt((this.uservipnum/this.usernumber)*100)"></el-progress>
                         <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
                       </el-col>
-                      <el-col :span="9" >
+                      <el-col :span="10" >
                         <div ref="echartsNumber" style="width: 400px;height:200px;"></div>
                       </el-col>
                     </el-row>
