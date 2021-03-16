@@ -107,6 +107,11 @@ export default {
             this.$axios.post('http://10.6.11.82:3000/meigang/storefront/updateStatusById',{storefrontIds:movedKeys,status:isClose}).then((result) => {
                 if (result.data.errorCode == '200') {
                     // this.getAllStorefront();
+                    this.items = 0,
+                    this.storefrontIds = [],
+                    // console.log(direction+"+++++++++++++"+movedKeys)
+                    this.cancel();
+                    this.changeCancel();
                 }else{ 
                     this.getAllStorefront();
                     this.$message.error(result.data.errorMessage);
@@ -133,10 +138,9 @@ export default {
             this.dialogFormVisibleAdd = true;
         },
         cancel(){
-            this.dialogFormVisibleAdd = false;
-            this.storefront.storefrontName = '';
-            this.storefront.storefrontAddress = '';
+            this.storefront={};
             this.$refs["addForm"].clearValidate();
+            this.dialogFormVisibleAdd = false;
         },
         addStorefront(){
             // console.log(this.storefront.storefrontAddress)
@@ -146,7 +150,8 @@ export default {
                 if (result.data.errorCode == '200') {
                     this.selectedOptions = [];
                     this.getAllStorefront();
-                    this.dialogFormVisibleAdd = false;
+                    this.cancel();
+                    // this.dialogFormVisibleAdd = false;
                 }else{ 
                     this.getAllStorefront();
                     this.$message.error(result.data.errorMessage);
@@ -171,10 +176,9 @@ export default {
             }
         },
         changeCancel(){
-            this.dialogFormVisibleChange = false;
-            this.storefront.storefrontName = '';
-            this.storefront.storefrontAddress = '';
+            this.item={};
             this.$refs["changeForm"].clearValidate();
+            this.dialogFormVisibleChange = false;
         },
         deleteStorefrontItem(){
             // console.log(this.storefrontIds)
@@ -211,7 +215,8 @@ export default {
                     if (result.data.errorCode == '200') {
                         this.selectedOptions = [];
                         this.getAllStorefront();
-                        this.dialogFormVisibleChange = false;
+                        this.changeCancel();
+                        // this.dialogFormVisibleChange = false;
                     }else{ 
                         this.getAllStorefront();
                         this.$message.error(result.data.errorMessage);
@@ -263,5 +268,12 @@ export default {
         margin-left: 0px;
         vertical-align:middle;
         border-radius:10%
+    }
+
+    .el-transfer-panel__body {
+        height: 100%;
+    }
+    .el-transfer-panel__list.is-filterable{
+        height: 100%;
     }
 </style>

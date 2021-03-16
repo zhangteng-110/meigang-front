@@ -8,7 +8,6 @@
     </el-breadcrumb>
     <div class="app-container">
       <div class="overview-layout">
-        
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="out-border">
@@ -34,7 +33,7 @@
                         <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
                       </el-col>
                       <el-col :span="10" >
-                        <div ref="echartsNumber" style="width: 400px;height:200px;"></div>
+                        <div ref="echartsNumber" style="width: 400px;height:200px;margin-left:10px"></div>
                       </el-col>
                     </el-row>
                     
@@ -90,6 +89,18 @@
         </el-row>
       </div>
     </div>
+    <div class="slot-layout">
+      <div class="layout-title">店铺营销排行榜</div>
+      <div v-for="(store,index) in storefront" :key="index" class="text item">
+        <div style="padding:15px 10px;">
+          <div style="background: #1e436e;color:#fff;margin-right: 5px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
+          <span style="font-style: oblique;font-size: 14px;">{{store.transactionStorefront}}</span>
+          <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{store.transactionMoney}}￥</div>
+        </div>
+        <!-- <span >
+        </span> -->
+      </div>
+    </div>
   </el-card>
 </template>
 
@@ -108,7 +119,8 @@
         tomorrowmoney: 0,
         lastmonthmoney: 0,
         lastyearmoney: 0,
-        isCollapse: true
+        isCollapse: true,
+        storefront: [],
       }
     },
     created(){
@@ -121,6 +133,7 @@
       this.$nextTick(() => {
         this.myEcharts();
       });
+      this.getAllStorefront();
       
     },
     updated(){
@@ -257,7 +270,17 @@
         }else{
           this.$store.state.isCollapse = false;
         }
-      }
+      },
+      getAllStorefront(){
+            this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectSlotStorefront').then((result) => {
+                if (result.data == null) {
+                    
+                }else{ 
+                    this.storefront = result.data;
+                    // this.$forceUpdate();
+                }
+            }).catch((result) => {});
+        },
       
     }
   }
@@ -266,8 +289,10 @@
 <style scoped>
   .app-container {
     /* margin-top: 40px; */
-    margin-left: 120px;
-    margin-right: 120px;
+    /* margin-left: 120px;
+    margin-right: 120px; */
+    width: 70%;
+    float: left;
   }
 
   .total-layout {
@@ -281,7 +306,7 @@
   }
 
   .total-icon {
-    color: #409EFF;
+    color: #721919;
     width: 60px;
     height: 60px;
   }
@@ -297,7 +322,7 @@
   .total-value {
     position: relative;
     font-size: 18px;
-    color: #606266;
+    color: #606366;
     left: 70px;
     top: -40px;
   }
@@ -325,6 +350,7 @@
 
   .overview-layout {
     margin-top: 20px;
+    /* width: 80%; */
   }
 
   .overview-item-value {
@@ -344,6 +370,7 @@
   .statistics-layout {
     margin-top: 20px;
     border: 1px solid #DCDFE6;
+    /* width: 80%; */
   }
   
   .address-content{
@@ -354,6 +381,14 @@
   .left{
     float:left;
     width:600px;
+  }
+
+  .slot-layout{
+    width: 29%;
+    float: right;
+    margin-top: 20px;
+    margin-left: 10px;
+    border: 1px solid #DCDFE6;
   }
   
 </style>
