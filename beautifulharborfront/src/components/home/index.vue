@@ -14,25 +14,25 @@
               <div class="layout-title">用户总览(单位/人)</div>
               <div style="padding: 20px">
                 <el-row :span="24">
-                  <el-col :span="8" style="margin-top: 50px">
+                  <el-col :span="7" style="margin-top: 50px">
                     <el-row>
-                      <el-col :span="8" class="color-danger overview-item-value">{{ usernumber }}</el-col>
-                      <el-col :span="8" class="color-danger overview-item-value">{{ staffnumber-1 }}</el-col>
-                      <el-col :span="8" class="color-danger overview-item-value">{{ uservipnum }}</el-col>
+                      <el-col :span="7" class="color-danger overview-item-value">{{ usernumber }}</el-col>
+                      <el-col :span="7" class="color-danger overview-item-value">{{ staffnumber-1 }}</el-col>
+                      <el-col :span="7" class="color-danger overview-item-value">{{ uservipnum }}</el-col>
                     </el-row>
                     <el-row style="margin-top: 20px">
-                      <el-col :span="8" class="overview-item-title">客户</el-col>
-                      <el-col :span="8" class="overview-item-title">员工</el-col>
-                      <el-col :span="8" class="overview-item-title">VIP</el-col>
+                      <el-col :span="7" class="overview-item-title">客户</el-col>
+                      <el-col :span="7" class="overview-item-title">员工</el-col>
+                      <el-col :span="7" class="overview-item-title">VIP</el-col>
                     </el-row>
                   </el-col>
-                  <el-col :span="16">
+                  <el-col :span="17">
                     <el-row>
                       <el-col style="text-align:center;margin-top: 20px;margin-bottom: 20px" :span="6">        
                         <el-progress :width="150" type="circle" :percentage="parseInt((this.uservipnum/this.usernumber)*100)" v-if="parseInt((this.uservipnum/this.usernumber)*100)"></el-progress>
                         <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
                       </el-col>
-                      <el-col :span="10" >
+                      <el-col :span="11" >
                         <div ref="echartsNumber" style="width: 400px;height:200px;margin-left:10px"></div>
                       </el-col>
                     </el-row>
@@ -90,18 +90,32 @@
       </div>
     </div>
     <div class="slot-layout">
-      <div class="layout-title">店铺营销排行榜</div>
-      <div v-for="(store,index) in storefront" :key="index" class="text item">
-        <div style="padding:15px 10px;">
-          <div style="background: #1e436e;color:#fff;margin-right: 5px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
-          <span style="font-style: oblique;font-size: 14px;">{{store.transactionStorefront}}</span>
-          <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{store.transactionMoney}}￥</div>
-        </div>
-        <!-- <span >
-        </span> -->
-      </div>
+      <el-tabs :stretch="true" type="border-card">
+          <el-tab-pane label="店铺vip充值排行榜">
+            <div v-for="(store,index) in storefront" :key="index" class="text item">
+              <div style="padding:15px 10px;">
+                <div style="background: #1e436e;color:#fff;margin-right: 5px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
+                <span style="font-style: oblique;font-size: 14px;">{{store.transactionStorefront}}</span>
+                <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{store.transactionMoney}}￥</div>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="店铺营销排行榜">
+            <div v-for="(shop,index) in store" :key="index" class="text item">
+              <div style="padding:15px 10px;">
+                <div style="background: #1e436e;color:#fff;margin-right: 5px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
+                <span style="font-style: oblique;font-size: 14px;">{{shop.consumptionStorefront}}</span>
+                <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{shop.consumptionMoney}}￥</div>
+              </div>
+            </div>
+          </el-tab-pane>
+      </el-tabs>
+      <!-- <div class="layout-title">
+        
+      </div> -->
+      
     </div>
-  </el-card>
+  </el-card>  
 </template>
 
 <script>
@@ -121,6 +135,7 @@
         lastyearmoney: 0,
         isCollapse: true,
         storefront: [],
+        store: []
       }
     },
     created(){
@@ -134,12 +149,31 @@
         this.myEcharts();
       });
       this.getAllStorefront();
+      this.getAllStore();
+      setInterval(()=>{
+        this.getStaffNumber();
+        this.getUserNumber();
+        this.getUserVipNumber();
+        this.getTomorrowMoney();
+        this.getLastMonthMoney();
+        this.getLastYearMoney();
+        this.$nextTick(() => {
+          this.myEcharts();
+        });
+        this.getAllStorefront(); 
+        this.getAllStore();   
+      },10000)
       
     },
     updated(){
       this.$nextTick(() => {
-        this.myEchartsNum();
-      });
+          this.myEchartsNum();
+      });  
+      setInterval(()=>{
+        this.$nextTick(() => {
+          this.myEchartsNum();
+        });   
+      },10000)
     },
     methods:{
       getStaffNumber(){
@@ -272,16 +306,25 @@
         }
       },
       getAllStorefront(){
-            this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectSlotStorefront').then((result) => {
-                if (result.data == null) {
+        this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectSlotStorefront').then((result) => {
+          if (result.data == null) {
                     
-                }else{ 
-                    this.storefront = result.data;
-                    // this.$forceUpdate();
-                }
-            }).catch((result) => {});
-        },
-      
+          }else{ 
+            this.storefront = result.data;
+            // this.$forceUpdate();
+          }
+        }).catch((result) => {});
+      },
+      getAllStore(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/consumption/selectSlotStorefront').then((result) => {
+          if (result.data == null) {
+                    
+          }else{ 
+            this.store = result.data;
+            // this.$forceUpdate();
+          }
+        }).catch((result) => {});
+      },
     }
   }
 </script>
@@ -388,7 +431,40 @@
     float: right;
     margin-top: 20px;
     margin-left: 10px;
-    border: 1px solid #DCDFE6;
+    /* border: 1px solid #DCDFE6; */
+    height: 1048px;
+  }
+
+  .el-tabs{
+    height: 1048px;
+  }
+
+  .el-tabs /deep/ .el-tabs__header{
+    height: 50px;
+    background: #409eff;
   }
   
+  .el-tabs /deep/ .el-tabs__header .el-tabs__item.is-active{
+    height: 50px;
+    /* background: #409eff; */
+    color: #606266;
+    padding-top: 5px;
+    background: #a9c3eb;
+    font-weight: bold;
+  }
+
+  .el-tabs /deep/ .el-tabs__header .el-tabs__nav-wrap{
+    height: 50px;
+    background: #a9c3eb;
+  }
+  
+  .el-tabs /deep/ .el-tabs__header .el-tabs__nav-wrap .el-tabs__nav-scroll{
+    background: #a9c3eb;
+    height: 50px;
+  }
+
+  .el-tabs /deep/ .el-tabs__header .el-tabs__nav-wrap .el-tabs__nav-scroll .el-tabs__nav.is-stretch{
+    background: #a9c3eb;
+    height: 50px;
+  }
 </style>

@@ -569,7 +569,7 @@ export default {
         },
         userConsumption(userId){
             this.$axios.post('http://10.6.11.82:3000/meigang/user/selectUserById?userId='+userId).then((result) => {
-                if(result.data.money<=0){
+                if(result.data.money<=0 && result.data.isVip!=0){
                     this.dialogFormVisibleConsumption = false;
                     this.$notify({
                         title: '警告',
@@ -602,22 +602,42 @@ export default {
 
         },
         consumption(){
-            this.$axios.post('http://10.6.11.82:3000/meigang/user/consumption', {
-                userId:this.userdetail.userId,
-                userCode:this.userdetail.userCode,
-                money:this.num,
-                projectId:this.userdetail.projectId,
-                consumptionStorefront:this.store.storefrontName}).then((result) => {
-                if (result.data == null) {
-                    
-                }else{
-                    this.$message.success(result.data.errorMessage);
-                    this.getUserList();
-                    this.dialogFormVisibleConsumption = false;
-                }
-            }).catch((result) => {
-                this.$message.error('网络异常');
-            });
+            if(this.userdetail.money==0){
+                this.$axios.post('http://10.6.11.82:3000/meigang/consumption/addConsumption', {
+                    userId:this.userdetail.userId,
+                    // userCode:this.userdetail.userCode,
+                    consumptionMoney:this.num,
+                    projectId:this.userdetail.projectId,
+                    consumptionStorefront:this.store.storefrontName}).then((result) => {
+                    if (result.data == null) {
+                        
+                    }else{
+                        this.$message.success(result.data.errorMessage);
+                        this.store.storefrontName = '';
+                        this.getUserList();
+                        this.dialogFormVisibleConsumption = false;
+                    }
+                }).catch((result) => {
+                    this.$message.error('网络异常');
+                });
+            }else{
+                this.$axios.post('http://10.6.11.82:3000/meigang/user/consumption', {
+                    userId:this.userdetail.userId,
+                    userCode:this.userdetail.userCode,
+                    money:this.num,
+                    projectId:this.userdetail.projectId,
+                    consumptionStorefront:this.store.storefrontName}).then((result) => {
+                    if (result.data == null) {
+                        
+                    }else{
+                        this.$message.success(result.data.errorMessage);
+                        this.getUserList();
+                        this.dialogFormVisibleConsumption = false;
+                    }
+                }).catch((result) => {
+                    this.$message.error('网络异常');
+                });
+            }
         },
         recharge(){
             this.$axios.post('http://10.6.11.82:3000/meigang/user/recharge', {
