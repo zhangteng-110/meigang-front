@@ -45,52 +45,66 @@
         </el-row>
       </div>
       <div class="statistics-layout">
-        <div class="layout-title">营业额统计</div>
-        <el-row>
-          <el-col :span="6">
-            <div style="padding: 20px">
-              <div style="margin-top: 20px;">
-                <div style="color: #909399;font-size: 14px">上月营业额</div>
-                <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
-                <!-- <div>
-                  <span class="color-danger" style="font-size: 14px">-10%</span>
-                  <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
-                </div> -->
-              </div>
-              <div style="margin-top: 20px;">
-                <div style="color: #909399;font-size: 14px">昨日营业额</div>
-                <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowmoney }}</div>
-                <!-- <div>
-                  <span class="color-success" style="font-size: 14px">+10%</span>
-                  <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
-                </div> -->
-              </div>        
-              <div style="margin-top: 20px;">
-                <div style="color: #909399;font-size: 14px">今年总营业额</div>
-                <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearmoney }}</div>
-                <!-- <div>
-                  <span class="color-success" style="font-size: 14px">+10%</span>
-                  <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
-                </div> -->
-              </div>
-              <div style="margin-top: 20px;">
-                <!-- <div style="color: #909399;font-size: 14px">本周销售总额</div>
-                <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div> -->
-                <!-- <div>
-                  <span class="color-danger" style="font-size: 14px">-10%</span>
-                  <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
-                </div> -->
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div ref="echarts" style="margin-top: 30px;width: 600px;height:400px;"></div>
-          </el-col>
-        </el-row>
+        <el-tabs type="border-card" class="tabs">
+          <el-tab-pane label="VIP充值额度统计">
+            <el-row>
+              <el-col :span="6">
+                <div style="padding: 20px">
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">上月充值金额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
+                  </div>
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">昨日充值金额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowmoney }}</div>
+                  </div>        
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">今年总充值金额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearmoney }}</div>
+                  </div>
+                  <div style="margin-top: 20px;">
+                    <!-- <div style="color: #909399;font-size: 14px">本周销售总额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div> -->
+                    <!-- <div>
+                      <span class="color-danger" style="font-size: 14px">-10%</span>
+                      <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
+                    </div> -->
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div ref="echarts" style="margin-top: 30px;width: 600px;height:400px;"></div>
+              </el-col>
+            </el-row>
+          </el-tab-pane>
+          <el-tab-pane label="客户销费统计">
+            <el-row>
+              <el-col :span="6">
+                <div style="padding: 20px">
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">上月营业额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthsalary }}</div>
+                  </div>
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">昨日营业额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowsalary }}</div>
+                  </div>        
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">今年总营业额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearsalary }}</div>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div ref="newEcharts" style="margin-top: 30px;width: 600px;height:400px;"></div>
+              </el-col>
+            </el-row>
+          </el-tab-pane>
+        </el-tabs>        
       </div>
     </div>
     <div class="slot-layout">
-      <el-tabs :stretch="true" type="border-card">
+      <el-tabs :stretch="true" type="card">
           <el-tab-pane label="店铺vip充值排行榜">
             <div v-for="(store,index) in storefront" :key="index" class="text item">
               <div style="padding:15px 10px;">
@@ -110,10 +124,6 @@
             </div>
           </el-tab-pane>
       </el-tabs>
-      <!-- <div class="layout-title">
-        
-      </div> -->
-      
     </div>
   </el-card>  
 </template>
@@ -135,7 +145,11 @@
         lastyearmoney: 0,
         isCollapse: true,
         storefront: [],
-        store: []
+        store: [],
+        tomorrowsalary: 0,
+        lastmonthsalary: 0,
+        lastyearsalary: 0,
+
       }
     },
     created(){
@@ -147,9 +161,13 @@
       this.getLastYearMoney();
       this.$nextTick(() => {
         this.myEcharts();
+        this.newEcharts();
       });
       this.getAllStorefront();
       this.getAllStore();
+      this.getTomorrowConsumptionMoney();
+      this.getLastMonthConsumptionMoney();
+      this.getLastYearConsumptionMoney();
       setInterval(()=>{
         this.getStaffNumber();
         this.getUserNumber();
@@ -157,11 +175,11 @@
         this.getTomorrowMoney();
         this.getLastMonthMoney();
         this.getLastYearMoney();
-        this.$nextTick(() => {
-          this.myEcharts();
-        });
         this.getAllStorefront(); 
-        this.getAllStore();   
+        this.getAllStore();
+        this.getTomorrowConsumptionMoney();
+        this.getLastMonthConsumptionMoney();
+        this.getLastYearConsumptionMoney();   
       },10000)
       
     },
@@ -169,11 +187,6 @@
       this.$nextTick(() => {
           this.myEchartsNum();
       });  
-      setInterval(()=>{
-        this.$nextTick(() => {
-          this.myEchartsNum();
-        });   
-      },10000)
     },
     methods:{
       getStaffNumber(){
@@ -226,7 +239,7 @@
         this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectEveryYearMoney').then((result) => {
             var option = {
               title: {
-                text: '年度营业额'
+                text: '年度VIP充值金额'
               },
               tooltip: {},
               legend: {
@@ -251,10 +264,6 @@
               }]
             };
           myChart.setOption(option);
-          // window.addEventListener('resize', () => {
-          //       // 自动渲染echarts
-          //       myChart.resize();
-          //   })
         }).catch((result) => {
             this.$message.error('网络异常');
         });
@@ -324,6 +333,64 @@
             // this.$forceUpdate();
           }
         }).catch((result) => {});
+      },
+      newEcharts(){
+        // 基于准备好的dom，初始化echarts实例
+        var bar_dv = this.$refs.newEcharts;
+        let myChart = this.$echarts.init(bar_dv);
+        // 指定图表的配置项和数据
+        this.$axios.get('http://10.6.11.82:3000/meigang/consumption/selectEveryYearMoney').then((result) => {
+            var option = {
+              title: {
+                text: '年度营业额'
+              },
+              tooltip: {},
+              legend: {
+                data:['营业额']
+              },
+              xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ["1","2","3","4","5","6","7","8","9","10","11","12"]
+                
+              },
+              yAxis: {
+                type: 'value',
+          
+              },
+              series: [{
+                name: '营业额',
+                type: 'line',
+                data: result.data,
+                areaStyle: {
+                }
+              }]
+            };
+          myChart.setOption(option);
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getTomorrowConsumptionMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/consumption/selectTomorrowConsumptionMoney').then((result) => {
+            this.tomorrowsalary = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getLastMonthConsumptionMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/consumption/selectMonthConsumptionMoney').then((result) => {
+            this.lastmonthsalary = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getLastYearConsumptionMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/consumption/selectLastYearMoney').then((result) => {
+            this.lastyearsalary = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
       },
     }
   }
@@ -412,8 +479,7 @@
 
   .statistics-layout {
     margin-top: 20px;
-    border: 1px solid #DCDFE6;
-    /* width: 80%; */
+    /* border: 1px solid #DCDFE6; */
   }
   
   .address-content{
@@ -431,12 +497,16 @@
     float: right;
     margin-top: 20px;
     margin-left: 10px;
-    /* border: 1px solid #DCDFE6; */
-    height: 1048px;
+    border: 1px solid #DCDFE6;
+    height: 1050px;
   }
 
   .el-tabs{
-    height: 1048px;
+    height: 1050px;
+  }
+
+  .tabs{
+    height: auto;
   }
 
   .el-tabs /deep/ .el-tabs__header{
@@ -451,6 +521,13 @@
     padding-top: 5px;
     background: #a9c3eb;
     font-weight: bold;
+  }
+
+  .el-tabs /deep/ .el-tabs__header .el-tabs__item{
+    height: 50px;
+    padding-top: 5px;
+    background: #a9c3eb;
+    color: #909399;
   }
 
   .el-tabs /deep/ .el-tabs__header .el-tabs__nav-wrap{

@@ -3,7 +3,7 @@
         <!-- 侧边菜单导航栏 -->
         <el-aside class="el-aside" width="auto" style="min-width:60px;">
             <!-- <h3>meigang</h3> -->
-            <el-menu :router="true" :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo" background-color="#7eb0d3" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose">        
+            <el-menu :router="true" :collapse="isCollapse" :default-active="$route.name" class="el-menu-vertical-demo" background-color="#7eb0d3" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose">        
                 <div style="text-align: center;height: 70px;">
                     <img style="width: 180px; height: 40px;margin-top: 10px;" src="@/assets/images/index_logo.png">
                 </div>
@@ -96,7 +96,11 @@
             if (!token) {
                 this.$router.push({name:'login'})
             }else{
+                if (this.$route.name == 'home') {
+                    this.$router.push({name:'index'})
+                }
                 // this.$router.push({name:'index'})
+                // console.log(this.$route)
             }
 
         },
@@ -114,8 +118,33 @@
             },
             menuOpen(){
                 this.isCollapse = !this.isCollapse
-            }
-        }
+                console.log(this.isCollapse)
+            },
+            
+        },
+        // computed:{
+        //     defaultMenu(){
+        //         const { name } = this.$route;
+        //         switch (name) {
+        //             case 'home':
+        //                 return 'index'
+        //             case 'index':
+        //                 return 'index'
+        //             case 'users':
+        //                 return 'users';
+        //             case 'staff':
+        //                 return 'staff';
+        //             case 'recharge':
+        //                 return 'recharge';
+        //             case 'consumption':
+        //                 return "consumption";
+        //             case 'serviceitem':
+        //                 return "serviceitem";
+        //             case 'storefront':
+        //                 return "storefront";
+        //         }
+        //     }
+        // }
     };
 </script>
 

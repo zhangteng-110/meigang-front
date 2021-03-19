@@ -46,7 +46,7 @@ import { default } from '../home/home.vue';
             <el-pagination class="el-pagination" background layout="total, sizes, prev, pager, next, jumper"  
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :page-sizes="[10, 20, 50, 200]"
+                :page-sizes="[20, 50, 200]"
                 :current-page="currentPage"    
                 :page-size="pageSize" :total="total">
             </el-pagination>
@@ -61,7 +61,7 @@ export default {
             datetime:'',
             realName:'',
             // 分页参数
-            pageSize: 10,//每页显示条数
+            pageSize: 20,//每页显示条数
             total: 0,
             currentPage: 1,//当前页 
             value: 1,

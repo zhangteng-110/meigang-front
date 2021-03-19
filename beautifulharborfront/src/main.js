@@ -37,6 +37,12 @@ Vue.filter('fmtdatetime',(v)=>{
   }
   return moment(v).format('yyyy-MM-DD HH:mm:ss')
 })
+Vue.filter('fmttime',(v)=>{
+  if (v===null) {
+    return '';
+  }
+  return moment(v).format('yyyy-MM-DD HH:mm:ss')
+})
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {  // 判断该路由是否需要登录权限
       if (localStorage.getItem('token')) {  // 通过vuex state获取当前的token是否存在

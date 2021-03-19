@@ -158,8 +158,8 @@
 
   .login-warp .login-form{
     background-color: white;
-    width: 320px;
-    height: 320px;
+    width: 400px;
+    height: 360px;
     padding: 30px;
     border-radius: 5px;
   }
