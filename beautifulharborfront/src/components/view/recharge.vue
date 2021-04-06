@@ -32,7 +32,7 @@ import { default } from '../home/home.vue';
             <el-table-column header-align="center" align="center" prop="transactionId" label="交易ID" ></el-table-column>
             <el-table-column header-align="center" align="center" prop="realName" label="客户姓名" ></el-table-column>
             <el-table-column header-align="center" align="center" sortable prop="transactionMoney" label="充值金额(元)" ></el-table-column>
-            <el-table-column header-align="center" align="center" sortable prop="transactionDate" label="充值日期" >
+            <el-table-column header-align="center" align="center" sortable prop="transactionDate" label="充值日期" width="180px">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     {{scope.row.transactionDate | fmtdatetime}}

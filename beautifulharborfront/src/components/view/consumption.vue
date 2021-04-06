@@ -118,7 +118,7 @@ export default {
                 }else{
                     this.total = result.data.total;
                     this.consumptionList = result.data.list;
-                    console.log(this.consumptionList)
+                    // console.log(this.consumptionList)
                 }
             }).catch((result) => {
                 this.$message.error('网络异常');

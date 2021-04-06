@@ -10,6 +10,7 @@ import Consumption from "@/components/view/consumption";
 import Serviceitem from "@/components/view/serviceitem";
 import Storefront from "@/components/view/storefront";
 import Error_404 from '@/components/404.vue'
+// import Map from "@/components/view/map";
 
 Vue.use(Router)
 
@@ -33,7 +34,8 @@ export default new Router({
         {path: '/recharge',name: 'recharge',component: Recharge},
         {path: '/consumption',name: 'consumption',component: Consumption},
         {path: '/serviceitem',name: 'serviceitem',component: Serviceitem},
-        {path: '/storefront',name: 'storefront',component: Storefront}
+        {path: '/storefront',name: 'storefront',component: Storefront},
+        // {path: '/map',name: 'map',component: Map}
       ]
     },{
       path: '/error_404',
@@ -42,6 +44,7 @@ export default new Router({
     }
   ]
 })
+
 const originalPush = Router.prototype.push
       Router.prototype.push = function push(location) {
         return originalPush.call(this, location).catch(err => err)

@@ -106,6 +106,7 @@
                   this.loading = false;
                   localStorage.setItem('token',result.data.token);
                   localStorage.setItem('staffName',result.data.staffName);
+                  localStorage.setItem('url',result.data.profilePath);
                   this.$router.push({name:'home'});
                   this.$message.success(result.data.errorMessage);
                 }else if(result.data.errorCode == 10010){

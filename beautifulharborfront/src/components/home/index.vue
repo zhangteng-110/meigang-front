@@ -8,10 +8,12 @@
     </el-breadcrumb>
     <div class="app-container">
       <div class="overview-layout">
+      <el-tabs type="border-card" style="height:auto;">
+        <el-tab-pane label="用户总览(单位/人)" >
         <el-row :gutter="20">
           <el-col :span="24">
-            <div class="out-border">
-              <div class="layout-title">用户总览(单位/人)</div>
+            <!-- <div class="out-border"> -->
+              <!-- <div class="layout-title">用户总览(单位/人)</div> -->
               <div style="padding: 20px">
                 <el-row :span="24">
                   <el-col :span="7" style="margin-top: 50px">
@@ -33,16 +35,19 @@
                         <span style="color:#909399;font-size: 14px">VIP占比：{{ uservipnum }}/{{ usernumber }}</span>
                       </el-col>
                       <el-col :span="11" >
-                        <div ref="echartsNumber" style="width: 400px;height:200px;margin-left:10px"></div>
+                        <div ref="echartsNumber" style="width: 400px;height:200px;margin-left:25px"></div>
                       </el-col>
                     </el-row>
                     
                   </el-col>
                 </el-row>
               </div>
-            </div> 
+            <!-- </div>  -->
           </el-col>
         </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="店铺总览" style="height:500px;"><my-map></my-map></el-tab-pane>
+        </el-tabs>
       </div>
       <div class="statistics-layout">
         <el-tabs type="border-card" class="tabs">
@@ -51,13 +56,17 @@
               <el-col :span="6">
                 <div style="padding: 20px">
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">上月充值金额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
-                  </div>
+                    <div style="color: #909399;font-size: 14px">当日充值金额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ todaymoney }}</div>
+                  </div> 
                   <div style="margin-top: 20px;">
                     <div style="color: #909399;font-size: 14px">昨日充值金额</div>
                     <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowmoney }}</div>
                   </div>        
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">上月充值金额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
+                  </div>
                   <div style="margin-top: 20px;">
                     <div style="color: #909399;font-size: 14px">今年总充值金额</div>
                     <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearmoney }}</div>
@@ -82,13 +91,17 @@
               <el-col :span="6">
                 <div style="padding: 20px">
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">上月营业额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthsalary }}</div>
+                    <div style="color: #909399;font-size: 14px">当日营业额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ todaysalary }}</div>
                   </div>
                   <div style="margin-top: 20px;">
                     <div style="color: #909399;font-size: 14px">昨日营业额</div>
                     <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowsalary }}</div>
                   </div>        
+                  <div style="margin-top: 20px;">
+                    <div style="color: #909399;font-size: 14px">上月营业额</div>
+                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthsalary }}</div>
+                  </div>
                   <div style="margin-top: 20px;">
                     <div style="color: #909399;font-size: 14px">今年总营业额</div>
                     <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearsalary }}</div>
@@ -107,18 +120,23 @@
       <el-tabs :stretch="true" type="card">
           <el-tab-pane label="店铺vip充值排行榜">
             <div v-for="(store,index) in storefront" :key="index" class="text item">
-              <div style="padding:15px 10px;">
-                <div style="background: #1e436e;color:#fff;margin-right: 5px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
-                <span style="font-style: oblique;font-size: 14px;">{{store.transactionStorefront}}</span>
+              
+              <div style="padding:15px 10px;" v-if="index<=9">
+                <div v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;">{{index+1}}</div>
+                <div v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
+                <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{store.transactionStorefront}}</el-badge></span>
+                <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{store.transactionStorefront}}</span>
                 <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{store.transactionMoney}}￥</div>
               </div>
             </div>
           </el-tab-pane>
           <el-tab-pane label="店铺营销排行榜">
             <div v-for="(shop,index) in store" :key="index" class="text item">
-              <div style="padding:15px 10px;">
-                <div style="background: #1e436e;color:#fff;margin-right: 5px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
-                <span style="font-style: oblique;font-size: 14px;">{{shop.consumptionStorefront}}</span>
+              <div style="padding:15px 10px;" v-if="index<=9">
+                <div v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold">{{index+1}}</div>
+                <div v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
+                <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{shop.consumptionStorefront}}</el-badge></span>
+                <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{shop.consumptionStorefront}}</span>
                 <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{shop.consumptionMoney}}￥</div>
               </div>
             </div>
@@ -133,13 +151,18 @@
   // import img_home_order from '@/assets/images/home_order.png';
   // import img_home_today_amount from '@/assets/images/home_today_amount.png';
   // import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
+  import MyMap from '@/components/view/Map'
   export default {
     name: 'home',
+    components: {
+      MyMap
+    },
     data() {
       return {
         staffnumber: 0,
         usernumber: 0,
         uservipnum: 0,
+        todaymoney: 0,
         tomorrowmoney: 0,
         lastmonthmoney: 0,
         lastyearmoney: 0,
@@ -149,7 +172,7 @@
         tomorrowsalary: 0,
         lastmonthsalary: 0,
         lastyearsalary: 0,
-
+        todaysalary: 0,
       }
     },
     created(){
@@ -159,6 +182,7 @@
       this.getTomorrowMoney();
       this.getLastMonthMoney();
       this.getLastYearMoney();
+      this.getTodayMoney();
       this.$nextTick(() => {
         this.myEcharts();
         this.newEcharts();
@@ -168,18 +192,15 @@
       this.getTomorrowConsumptionMoney();
       this.getLastMonthConsumptionMoney();
       this.getLastYearConsumptionMoney();
+      this.getTodayConsumptionMoney();
       setInterval(()=>{
         this.getStaffNumber();
         this.getUserNumber();
         this.getUserVipNumber();
-        this.getTomorrowMoney();
-        this.getLastMonthMoney();
-        this.getLastYearMoney();
         this.getAllStorefront(); 
         this.getAllStore();
-        this.getTomorrowConsumptionMoney();
-        this.getLastMonthConsumptionMoney();
-        this.getLastYearConsumptionMoney();   
+        this.getTodayMoney();
+        this.getTodayConsumptionMoney();   
       },10000)
       
     },
@@ -227,6 +248,13 @@
       getLastYearMoney(){
         this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectLastYearMoney').then((result) => {
             this.lastyearmoney = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+      getTodayMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectTodayTransactionMoney').then((result) => {
+            this.todaymoney = result.data
         }).catch((result) => {
             this.$message.error('网络异常');
         });
@@ -392,6 +420,13 @@
             this.$message.error('网络异常');
         });
       },
+      getTodayConsumptionMoney(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/consumption/selectTodayConsumptionMoney').then((result) => {
+            this.todaysalary = result.data
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      }
     }
   }
 </script>
@@ -461,6 +496,7 @@
   .overview-layout {
     margin-top: 20px;
     /* width: 80%; */
+    height: auto;
   }
 
   .overview-item-value {
@@ -498,11 +534,11 @@
     margin-top: 20px;
     margin-left: 10px;
     border: 1px solid #DCDFE6;
-    height: 1050px;
+    height: auto;
   }
 
   .el-tabs{
-    height: 1050px;
+    height: auto;
   }
 
   .tabs{
@@ -544,4 +580,5 @@
     background: #a9c3eb;
     height: 50px;
   }
+
 </style>

@@ -60,13 +60,26 @@
                     <span v-if="this.isCollapse == false"><i style="font-size:20px" class="el-icon-s-fold" @click="menuOpen"></i></span>
                     <span v-if="this.isCollapse == true"><i style="font-size:20px" class="el-icon-s-unfold" @click="menuOpen"></i></span>
                 </el-col>
-                <el-dropdown>
-                    <i class="el-icon-user-solid" style="margin-right: 15px"><span> {{username}}</span></i>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>个人</el-dropdown-item>
-                        <el-dropdown-item><a href="#" @click.prevent="handleLogout()">退出</a></el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>                
+                <el-col :span="21" style="padding-top:10px">
+                    <iframe allowtransparency="true" frameborder="0" width="180" height="36" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=3&z=2&t=1&v=0&d=3&bd=0&k=000000&f=&ltf=0080ff&htf=cc0000&q=1&e=0&a=1&c=54511&w=180&h=36&align=center"></iframe>
+                </el-col>
+                <div style="padding:10px;height:60px;line-height:1.5;display: inline-block;vertical-align: middle;">
+                    <el-dropdown >
+                        <el-avatar :src="url"></el-avatar>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-card :body-style="{ padding: '0px' }">
+                                <img style="width:100%;height:180px" :src="url" class="image">
+                                <div style="padding: 14px;">
+                                    <span>User：{{username}}</span>
+                                    <div class="bottom clearfix">
+                                        <el-dropdown-item><i class="el-icon-user-solid"></i>个人</el-dropdown-item>
+                                        <el-dropdown-item><i class="el-icon-switch-button"></i><a href="#" @click.prevent="handleLogout()">退出</a></el-dropdown-item>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </el-dropdown-menu>
+                    </el-dropdown>                
+                </div>             
             </el-row>
         </el-header>
         <!-- 页面内容 -->
@@ -86,8 +99,10 @@
     export default {
         data(){
             const staffName = localStorage.getItem('staffName');
+            const url = localStorage.getItem('url');
             return{
                 username:staffName,
+                url:url,
                 isCollapse: false,
             };
         },
@@ -113,7 +128,7 @@
             },
             handleLogout(){
                 localStorage.clear();
-                this.$message.success('退出成功');
+                // this.$message.success('退出成功');
                 this.$router.push({name:'login'});
             },
             menuOpen(){
@@ -195,5 +210,19 @@
         border-radius: 5px;
     }
     
+    .bottom {
+        margin-top: 13px;
+        line-height: 12px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    
+    .clearfix:after {
+        clear: both
+    }
 </style>
 
