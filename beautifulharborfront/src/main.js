@@ -5,16 +5,17 @@ import Vuex from 'vuex'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import VueAxios from 'vue-axios';
 import moment from "moment";
 import echarts from 'echarts';
-import '@/assets/css/reset.css'
-import './utils/flexible.js'
-import { HappyScroll } from 'vue-happy-scroll'
 // 引入css
+import './utils/flexible.js'
+import '@/assets/css/reset.css'
+import '@/assets/css/font.css'
+import 'element-ui/lib/theme-chalk/index.css';
 import 'vue-happy-scroll/docs/happy-scroll.css'
+import { HappyScroll } from 'vue-happy-scroll'
 // import '../theme/index.css'
 
 //自定义组件名

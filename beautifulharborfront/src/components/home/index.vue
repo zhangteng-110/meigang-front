@@ -118,7 +118,12 @@
     </div>
     <div class="slot-layout">
       <el-tabs :stretch="true" type="card">
-          <el-tab-pane label="店铺vip充值排行榜">
+          <el-tab-pane label="牛店vip充值榜">
+            <div style="height:25px;">
+              <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStorefront">
+                <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
+              </el-radio-group>
+            </div>
             <div v-for="(store,index) in storefront" :key="index" class="text item">             
               <div style="padding:15px 10px;" v-if="index<=9">
                 <div v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;">{{index+1}}</div>
@@ -129,7 +134,12 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="店铺营销排行榜">
+          <el-tab-pane label="牛店营销榜">
+            <div style="height:25px;">
+              <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStore">
+                <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
+              </el-radio-group>
+            </div>
             <div v-for="(shop,index) in store" :key="index" class="text item">
               <div style="padding:15px 10px;" v-if="index<=9">
                 <div v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold">{{index+1}}</div>
@@ -172,6 +182,8 @@
         lastmonthsalary: 0,
         lastyearsalary: 0,
         todaysalary: 0,
+        radio: new Date().getMonth()+1,
+        months:[1,2,3,4,5,6,7,8,9,10,11,12]
       }
     },
     created(){
@@ -342,7 +354,8 @@
         }
       },
       getAllStorefront(){
-        this.$axios.get('http://10.6.11.82:3000/meigang/transaction/selectSlotStorefront').then((result) => {
+        console.log(this.radio)
+        this.$axios.post('http://10.6.11.82:3000/meigang/transaction/selectSlotStorefront?month='+this.radio).then((result) => {
           if (result.data == null) {
                     
           }else{ 
@@ -352,7 +365,7 @@
         }).catch((result) => {});
       },
       getAllStore(){
-        this.$axios.get('http://10.6.11.82:3000/meigang/consumption/selectSlotStorefront').then((result) => {
+        this.$axios.post('http://10.6.11.82:3000/meigang/consumption/selectSlotStorefront?month='+this.radio).then((result) => {
           if (result.data == null) {
                     
           }else{ 
@@ -546,38 +559,52 @@
 
   .el-tabs /deep/ .el-tabs__header{
     height: 50px;
-    background: #409eff;
+    /* background: #409eff; */
+    margin: 0;
   }
   
   .el-tabs /deep/ .el-tabs__header .el-tabs__item.is-active{
     height: 50px;
     /* background: #409eff; */
-    color: #606266;
+    /* color: #606266; */
     padding-top: 5px;
-    background: #a9c3eb;
+    /* background: #a9c3eb; */
     font-weight: bold;
   }
 
   .el-tabs /deep/ .el-tabs__header .el-tabs__item{
     height: 50px;
     padding-top: 5px;
-    background: #a9c3eb;
-    color: #909399;
+    /* background: #a9c3eb; */
+    /* color: #909399; */
   }
 
   .el-tabs /deep/ .el-tabs__header .el-tabs__nav-wrap{
     height: 50px;
-    background: #a9c3eb;
+    /* background: #a9c3eb; */
   }
   
   .el-tabs /deep/ .el-tabs__header .el-tabs__nav-wrap .el-tabs__nav-scroll{
-    background: #a9c3eb;
+    /* background: #a9c3eb; */
     height: 50px;
   }
 
   .el-tabs /deep/ .el-tabs__header .el-tabs__nav-wrap .el-tabs__nav-scroll .el-tabs__nav.is-stretch{
-    background: #a9c3eb;
+    /* background: #a9c3eb; */
     height: 50px;
   }
 
+  .el-radio-button{
+    width: 38px;
+  }
+
+  .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+    width: 38px;
+  }
+
+  .teshu {
+    font-family:  newfont;
+    /* font-size: 5px;
+    font-weight: bold; */
+  }
 </style>
