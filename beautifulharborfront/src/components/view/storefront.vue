@@ -247,10 +247,11 @@ export default {
         height:100%
     }
     .el-transfer-panel{
-        width: 400px;
-        height: 600px;
+        width: 500px;
+        height: 700px;
         background-color: #d3ecf0;
         border: 1px solid black;
+        padding-bottom: 15px;
     }
     .el-transfer-panel .el-transfer-panel__footer{
         background: #d3ecf0;
@@ -271,9 +272,12 @@ export default {
     }
 
     .el-transfer-panel__body {
-        height: 100%;
+        height: 91%;
     }
     .el-transfer-panel__list.is-filterable{
-        height: 100%;
+        height: 91%;
+    }
+    .el-transfer-panel__list{
+        padding: 0;
     }
 </style>

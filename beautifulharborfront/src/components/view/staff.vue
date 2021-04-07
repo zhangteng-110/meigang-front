@@ -14,9 +14,9 @@ import { default } from '../home/home.vue';
             </el-col>
         </el-row>
         <el-table :data="staffList" style="width: 100%" :header-cell-style="{background:'#c2cedb',color:'black'}" :default-sort = "{prop: 'startDate'}">
-            <el-table-column header-align="center" align="center" prop="staffId" label="ID" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="staffId" label="ID" width="70px"></el-table-column>
             <el-table-column header-align="center" align="center" prop="staffName" label="姓名" ></el-table-column>
-            <el-table-column header-align="center" align="center" prop="staffSex" label="性别" >
+            <el-table-column header-align="center" align="center" prop="staffSex" label="性别" width="40px">
                 <template slot-scope="scope">
                     <span v-if="scope.row.staffSex === 'MAN'">男</span>
                     <span v-if="scope.row.staffSex === 'WEMAN'">女</span>
@@ -29,19 +29,19 @@ import { default } from '../home/home.vue';
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="phone" label="手机号" width="130px"></el-table-column>
             <el-table-column header-align="center" align="center" prop="roleName" label="职位" ></el-table-column>
-            <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" width="130px">
+            <el-table-column header-align="center" align="center" prop="startDate" label="工作日期" width="130px" sortable>
                 <template slot-scope="scope">
                     <span v-if="scope.row.startDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.startDate | fmtdate}}
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="endDate" label="离职日期">
+            <el-table-column header-align="center" align="center" prop="endDate" label="离职日期" width="130px" sortable>
                 <template slot-scope="scope">
                     <span v-if="scope.row.endDate !== null"><i class="el-icon-time"></i></span>
                     {{scope.row.endDate | fmtdate}}
                 </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="salary" label="薪资(元)" ></el-table-column>
+            <el-table-column header-align="center" align="center" prop="salary" label="薪资(元)" sortable></el-table-column>
             <el-table-column header-align="center" align="center" prop="storefrontName" label="就职门店" width="100px"></el-table-column>
             <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="180px">
                 <template slot-scope="scope">

@@ -38,6 +38,11 @@ import { default } from '../home/home.vue';
                     {{scope.row.consumptionDate | fmtdatetime}}
                 </template>
             </el-table-column>
+            <el-table-column header-align="center" align="center" label="账户余额(元)">
+                <template slot-scope="scope">
+                    {{scope.row.accountAmount}}
+                </template>
+            </el-table-column>
             <el-table-column header-align="center" align="center" prop="projectName" label="消费项目" ></el-table-column>
             <el-table-column header-align="center" align="center" prop="consumptionStorefront" label="消费店铺" ></el-table-column>
             <el-table-column header-align="center" align="center" prop="integral" label="积分" ></el-table-column>

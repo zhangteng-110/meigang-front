@@ -201,8 +201,8 @@ export default {
         height:100%
     }
     .el-transfer-panel{
-        width: 400px;
-        height: 600px;
+        width: 500px;
+        height: 700px;
         background-color: #d3ecf0;
         border: 1px solid black;
     }
@@ -222,5 +222,17 @@ export default {
         margin-left: 0px;
         vertical-align:middle;
         border-radius:10%
+    }
+
+    .el-transfer-panel__body {
+        height: 91%;
+    }
+
+    .el-transfer-panel__list.is-filterable{
+        height: 91%;
+    }
+    
+    .el-transfer-panel__list{
+        padding: 0;
     }
 </style>

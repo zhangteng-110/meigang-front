@@ -119,8 +119,7 @@
     <div class="slot-layout">
       <el-tabs :stretch="true" type="card">
           <el-tab-pane label="店铺vip充值排行榜">
-            <div v-for="(store,index) in storefront" :key="index" class="text item">
-              
+            <div v-for="(store,index) in storefront" :key="index" class="text item">             
               <div style="padding:15px 10px;" v-if="index<=9">
                 <div v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;">{{index+1}}</div>
                 <div v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
@@ -201,7 +200,7 @@
         this.getAllStore();
         this.getTodayMoney();
         this.getTodayConsumptionMoney();   
-      },10000)
+      },1000*60)
       
     },
     updated(){

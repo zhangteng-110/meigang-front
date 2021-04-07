@@ -38,6 +38,11 @@ import { default } from '../home/home.vue';
                     {{scope.row.transactionDate | fmtdatetime}}
                 </template>
             </el-table-column>
+            <el-table-column header-align="center" align="center" label="账户金额(元)">
+                <template slot-scope="scope">
+                    {{scope.row.accountAmount}}
+                </template>
+            </el-table-column>
             <el-table-column header-align="center" align="center" prop="transactionStorefront" label="消费店铺" ></el-table-column>
             <el-table-column header-align="center" align="center" prop="usercode" label="操作" >
             </el-table-column>

@@ -15,6 +15,7 @@ import './utils/flexible.js'
 import { HappyScroll } from 'vue-happy-scroll'
 // 引入css
 import 'vue-happy-scroll/docs/happy-scroll.css'
+// import '../theme/index.css'
 
 //自定义组件名
 Vue.component('happy-scroll', HappyScroll)

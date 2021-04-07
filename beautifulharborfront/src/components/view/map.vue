@@ -1,7 +1,7 @@
 import { default } from '../home/home.vue';
 <template>
     <div style="width:100%;">
-        <div id="pickerBox">
+        <!-- <div id="pickerBox">
             <el-input
                 id="pickerInput"
                 placeholder="输入关键字选取地点"
@@ -9,7 +9,7 @@ import { default } from '../home/home.vue';
                 v-model="address">
             </el-input>
             <div id="poiInfo"></div>
-        </div>
+        </div> -->
         <div id="container" style="width:800px; height:500px">
             
         </div>
@@ -29,7 +29,7 @@ export default {
     },
     mounted: function () {
         this.init();
-        this.initSelect();
+        // this.initSelect();
         this.getStorefront();
     },
     methods: {
@@ -48,10 +48,10 @@ export default {
                 layers:[layer]
             })
             map.setFeatures(['road','point','building','bg']);
-            AMap.plugin(['AMap.Scale'],function(){//异步同时加载多个插件
-                var scale = new AMap.Scale();
-                map.addControl(scale);
-            });
+            // AMap.plugin(['AMap.Scale'],function(){//异步同时加载多个插件
+            //     var scale = new AMap.Scale();
+            //     map.addControl(scale);
+            // });
             // map.on('click', function(ev) {
             // });
         },

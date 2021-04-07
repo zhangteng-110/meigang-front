@@ -68,11 +68,11 @@
                         <el-avatar :src="url"></el-avatar>
                         <el-dropdown-menu slot="dropdown">
                             <el-card :body-style="{ padding: '0px' }">
-                                <img style="width:100%;height:180px" :src="url" class="image">
+                                <img style="width:100%;height:180px;border-radius:50%;" :src="url" class="image">
                                 <div style="padding: 14px;">
                                     <span>User：{{username}}</span>
                                     <div class="bottom clearfix">
-                                        <el-dropdown-item><i class="el-icon-user-solid"></i>个人</el-dropdown-item>
+                                        <!-- <el-dropdown-item><i class="el-icon-user-solid"></i>个人</el-dropdown-item> -->
                                         <el-dropdown-item><i class="el-icon-switch-button"></i><a href="#" @click.prevent="handleLogout()">退出</a></el-dropdown-item>
                                     </div>
                                 </div>
