@@ -32,8 +32,22 @@
             </span>
           </el-input>
         </el-form-item>
+        <el-form-item>
+          <el-row :span="24">
+            <el-col :span="13">
+              <el-input v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码" size=""
+                        ></el-input>
+            </el-col>
+            <el-col :span="11">
+              <div class="login-code" width="100%" @click="refreshCode">
+                <!--验证码组件-->
+                <s-identify :identifyCode="identifyCode"></s-identify>
+              </div>
+            </el-col>
+          </el-row>
+        </el-form-item>
         <el-form-item style="margin-bottom: 60px;text-align: center">
-          <el-button style="width: 45%" type="primary" :plain="true" :loading="loading" @click.native.prevent="handleLogin">
+          <el-button style="width: 90%" type="primary" :plain="true" :loading="loading" @click.native.prevent="handleLogin">
             登录
           </el-button>
         </el-form-item>
@@ -46,8 +60,10 @@
   // import {setSupport,getSupport,setCookie,getCookie} from '@/utils/support';
   // import login_center_bg from '@/assets/images/login_center_bg.png';
   import url from "@/assets/images/meigang.png";
+  import SIdentify from '@/components/login/SIdentify'
   export default {
     name: 'login',
+    components: { SIdentify },
     data() {
       const validateUsername = (rule, value, callback) => {
         if (!isvalidUsername(value)) {
@@ -67,15 +83,19 @@
         loginForm: {
           username: '',
           password: '',
+          code:''
         },
         loginRules: {
           username: [{required: true, trigger: 'blur', validator: validateUsername}],
-          password: [{required: true, trigger: 'blur', validator: validatePass}]
+          password: [{required: true, trigger: 'blur', validator: validatePass}],
+          code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
         },
         loading: false,
         pwdType: 'password',
         dialogVisible:false,
         logo_url:url,
+        identifyCode:'',
+        identifyCodes:'1234567890abcdefjhijklinopqrsduvwxyz'
       }
     },
     created() {
@@ -87,6 +107,9 @@
       // if(this.loginForm.password === undefined||this.loginForm.password==null){
       //   this.loginForm.password = '';
       // }
+      // 初始化验证码
+      this.identifyCode = ''
+      this.makeCode(this.identifyCodes, 4)
     },
     methods: {
       showPwd() {
@@ -97,6 +120,11 @@
         }
       },
       handleLogin() {
+        if (this.loginForm.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
+          this.$message.error('请填写正确验证码')
+          this.refreshCode()
+          return
+        }
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true;
@@ -140,6 +168,20 @@
       dialogCancel(){
         this.dialogVisible = false;
         setSupport(false);
+      },
+      randomNum (min, max) {
+        return Math.floor(Math.random() * (max - min) + min)
+      },
+      refreshCode () {
+        this.identifyCode = ''
+        this.makeCode(this.identifyCodes, 4)
+      },
+      makeCode (o, l) {
+        for (let i = 0; i < l; i++) {
+          this.identifyCode += this.identifyCodes[
+            this.randomNum(0, this.identifyCodes.length)
+          ]
+        }
       }
     }
   }
@@ -159,8 +201,8 @@
 
   .login-warp .login-form{
     background-color: white;
-    width: 400px;
-    height: 360px;
+    width: 450px;
+    height: 420px;
     padding: 30px;
     border-radius: 5px;
   }

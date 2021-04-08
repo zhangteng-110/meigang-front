@@ -155,8 +155,8 @@ import { default } from '../home/home.vue';
                 <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
                     <el-input clearable size="medium" v-model="userdetail.email" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>
-                <el-form-item label="卡号" prop="cardNumber" :label-width="formLabelWidth" v-show="bisible">
-                    <el-input clearable size="medium" v-model="userdetail.cardNumber" autocomplete="off" placeholder="请输入开通卡号" style ="width:230px;"></el-input>
+                <el-form-item label="卡号" prop="cardNumber" :label-width="formLabelWidth">
+                    <el-input clearable size="medium" v-model="userdetail.cardNumber" autocomplete="off" style ="width:230px;"></el-input>
                 </el-form-item>    
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">

@@ -10,7 +10,7 @@ import { default } from '../home/home.vue';
             </el-input>
             <div id="poiInfo"></div>
         </div> -->
-        <div id="container" style="width:800px; height:500px">
+        <div id="container" style="width:auto; height:500px">
             
         </div>
         <!-- <div class="weather">
