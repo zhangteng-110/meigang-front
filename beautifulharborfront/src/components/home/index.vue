@@ -116,18 +116,22 @@
         </el-tabs>        
       </div>
     </div>
+    <div class="watch-layout">
+      <!-- <clock :time="time"></clock> -->
+      <span style="font-size:50px;" id="watch">{{ time }}</span>
+    </div>
     <div class="slot-layout">
       <el-tabs :stretch="true" type="card">
           <el-tab-pane label="牛店vip充值榜">
-            <div style="height:25px;">
+            <div style="height:25px;margin-bottom:10px">
               <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStorefront">
                 <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
               </el-radio-group>
             </div>
             <div v-for="(store,index) in storefront" :key="index" class="text item">             
               <div style="padding:15px 10px;" v-if="index<=9">
-                <div v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;">{{index+1}}</div>
-                <div v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
+                <div class="teshu" v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;line-height:20px;font-size:18px">{{index+1}}</div>
+                <div class="teshu" v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;line-height:20px">{{index+1}}</div>
                 <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{store.transactionStorefront}}</el-badge></span>
                 <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{store.transactionStorefront}}</span>
                 <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{store.transactionMoney}}￥</div>
@@ -135,15 +139,15 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="牛店营销榜">
-            <div style="height:25px;">
+            <div style="height:25px;margin-bottom:10px">
               <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStore">
                 <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
               </el-radio-group>
             </div>
             <div v-for="(shop,index) in store" :key="index" class="text item">
               <div style="padding:15px 10px;" v-if="index<=9">
-                <div v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold">{{index+1}}</div>
-                <div v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;">{{index+1}}</div>
+                <div class="teshu" v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;line-height:20px;font-size:18px">{{index+1}}</div>
+                <div class="teshu" v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;line-height:20px">{{index+1}}</div>
                 <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{shop.consumptionStorefront}}</el-badge></span>
                 <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{shop.consumptionStorefront}}</span>
                 <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{shop.consumptionMoney}}￥</div>
@@ -152,6 +156,7 @@
           </el-tab-pane>
       </el-tabs>
     </div>
+    
   </el-card>  
 </template>
 
@@ -161,10 +166,12 @@
   // import img_home_today_amount from '@/assets/images/home_today_amount.png';
   // import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
   import MyMap from '@/components/view/Map'
+  // import Clock from 'vue-clock2';
   export default {
     name: 'home',
     components: {
-      MyMap
+      MyMap,
+      // Clock 
     },
     data() {
       return {
@@ -183,7 +190,8 @@
         lastyearsalary: 0,
         todaysalary: 0,
         radio: new Date().getMonth()+1,
-        months:[1,2,3,4,5,6,7,8,9,10,11,12]
+        months:[1,2,3,4,5,6,7,8,9,10,11,12],
+        time: ''
       }
     },
     created(){
@@ -220,6 +228,7 @@
           this.myEchartsNum();
       });  
     },
+    
     methods:{
       getStaffNumber(){
         this.$axios.get('http://10.6.11.82:3000/meigang/staff/getStaffNumber').then((result) => {
@@ -438,7 +447,8 @@
         }).catch((result) => {
             this.$message.error('网络异常');
         });
-      }
+      },
+      
     }
   }
 </script>
@@ -607,4 +617,9 @@
     /* font-size: 5px;
     font-weight: bold; */
   }
+
+  /* .watch-layout{
+    text-align: center;
+    width: 100%;
+  } */
 </style>

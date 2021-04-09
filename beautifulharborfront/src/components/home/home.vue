@@ -60,8 +60,14 @@
                     <span v-if="this.isCollapse == false"><i style="font-size:20px" class="el-icon-s-fold" @click="menuOpen"></i></span>
                     <span v-if="this.isCollapse == true"><i style="font-size:20px" class="el-icon-s-unfold" @click="menuOpen"></i></span>
                 </el-col>
-                <el-col :span="21" style="padding-top:10px">
+                <el-col :span="5" style="padding-top:10px">
                     <iframe allowtransparency="true" frameborder="0" width="180" height="36" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=3&z=2&t=1&v=0&d=3&bd=0&k=000000&f=&ltf=0080ff&htf=cc0000&q=1&e=0&a=1&c=54511&w=180&h=36&align=center"></iframe>
+                </el-col>
+                <el-col :span="16">
+                    <div class="watch-layout">
+                        <!-- <clock :time="time"></clock> -->
+                        <span style="font-size:50px;font-family: newfont;" id="watch">{{ time }}</span>
+                    </div>
                 </el-col>
                 <div style="padding:10px;height:60px;line-height:1.5;display: inline-block;vertical-align: middle;">
                     <el-dropdown >
@@ -104,6 +110,7 @@
                 username:staffName,
                 url:url,
                 isCollapse: false,
+                time: ''
             };
         },
         beforeCreate(){
@@ -118,6 +125,10 @@
                 // console.log(this.$route)
             }
 
+        },
+        mounted(){
+            // this.gettime()
+            setInterval(()=>{this.gettime()},1000)
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -135,7 +146,17 @@
                 this.isCollapse = !this.isCollapse
                 console.log(this.isCollapse)
             },
-            
+            gettime() {
+                var t = new Date();
+                var h = t.getHours(),
+                    min = t.getMinutes(),
+                    s = t.getSeconds();
+                if( h < 10 ){ h = '0' + h }
+                if( min < 10 ){ min = '0' + min }
+                if( s < 10 ){ s = '0' + s }
+                var full_time = h + ':' + min + ':' + s;
+                document.getElementById('watch').innerText = full_time;
+            }
         },
         // computed:{
         //     defaultMenu(){
