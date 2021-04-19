@@ -39,6 +39,20 @@
                     <i class="el-icon-s-shop" style="color: black"></i>
                     <span slot="title">店铺管理</span>
                 </el-menu-item>
+                <el-menu-item index="notice" style="min-width:60px">
+                    <i class="el-icon-mic" style="color: black"></i>
+                    <span slot="title">公告管理</span>
+                </el-menu-item>
+                <!-- <el-submenu index="4" style="min-width:60px">
+                    <template slot="title">
+                        <i class="el-icon-star-off" style="color: black"></i>
+                        <span>账号权限管理</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item index="staffauthority">员工账号</el-menu-item>
+                        <el-menu-item index="">客户账号</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu> -->
                         <!-- <i class="el-icon-s-fold" style="color: black"></i> -->
                     
                     

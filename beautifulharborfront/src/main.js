@@ -14,17 +14,22 @@ import './utils/flexible.js'
 import '@/assets/css/reset.css'
 import '@/assets/css/font.css'
 import 'element-ui/lib/theme-chalk/index.css';
-import 'vue-happy-scroll/docs/happy-scroll.css'
-import { HappyScroll } from 'vue-happy-scroll'
+// import 'vue-happy-scroll/docs/happy-scroll.css'
+// import { HappyScroll } from 'vue-happy-scroll'
+// Basic Use - Covers most scenarios
+// import { VueEditor } from 'vue2-editor'
+// Advanced Use - Hook into Quill's API for Custom Functionality
+// import { VueEditor, Quill } from 'vue2-editor'
 // import '../theme/index.css'
 
 //自定义组件名
-Vue.component('happy-scroll', HappyScroll)
+// Vue.component('happy-scroll', HappyScroll)
+// Vue.component('vue-editor',VueEditor)
 Vue.use(Vuex)
 Vue.use(ElementUI);
-Vue.config.productionTip = false
 Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;
+Vue.config.productionTip = false
 
 
 Vue.filter('fmtdate',(v)=>{

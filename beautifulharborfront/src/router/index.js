@@ -10,7 +10,8 @@ import Consumption from "@/components/view/consumption";
 import Serviceitem from "@/components/view/serviceitem";
 import Storefront from "@/components/view/storefront";
 import Error_404 from '@/components/404.vue'
-// import Map from "@/components/view/map";
+import Staffauthority from "@/components/view/staffauthority";
+import Notice from "@/components/view/notice";
 
 Vue.use(Router)
 
@@ -35,7 +36,8 @@ export default new Router({
         {path: '/consumption',name: 'consumption',component: Consumption},
         {path: '/serviceitem',name: 'serviceitem',component: Serviceitem},
         {path: '/storefront',name: 'storefront',component: Storefront},
-        // {path: '/map',name: 'map',component: Map}
+        {path: '/staffauthority',name: 'staffauthority',component: Staffauthority},
+        {path: '/notice',name: 'notice',component: Notice}
       ]
     },{
       path: '/error_404',

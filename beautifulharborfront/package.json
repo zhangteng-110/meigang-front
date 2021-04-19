@@ -20,7 +20,9 @@
     "vue": "^2.6.12",
     "vue-amap": "^0.5.10",
     "vue-axios": "^3.2.0",
+    "vue-clock": "^0.3.1",
     "vue-router": "^3.0.1",
+    "vue2-editor": "^2.10.2",
     "vuex": "^3.6.0"
   },
   "devDependencies": {

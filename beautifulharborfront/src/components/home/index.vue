@@ -118,7 +118,13 @@
     </div>
     <div class="watch-layout">
       <!-- <clock :time="time"></clock> -->
-      <span style="font-size:50px;" id="watch">{{ time }}</span>
+      <!-- <span style="font-size:50px;" id="watch">{{ time }}</span> -->
+      <el-alert
+        title="📢"
+        type="error" 
+        close-text="知道了">
+        <Scroller :lists="noticeList" class="scrollContainer" />
+      </el-alert>
     </div>
     <div class="slot-layout">
       <el-tabs :stretch="true" type="card">
@@ -161,16 +167,14 @@
 </template>
 
 <script>
-  // import {str2Date} from '@/utils/date';
-  // import img_home_order from '@/assets/images/home_order.png';
-  // import img_home_today_amount from '@/assets/images/home_today_amount.png';
-  // import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
   import MyMap from '@/components/view/Map'
+  import Scroller from "@/components/view/Scroll"
   // import Clock from 'vue-clock2';
   export default {
     name: 'home',
     components: {
       MyMap,
+      Scroller 
       // Clock 
     },
     data() {
@@ -191,7 +195,8 @@
         todaysalary: 0,
         radio: new Date().getMonth()+1,
         months:[1,2,3,4,5,6,7,8,9,10,11,12],
-        time: ''
+        time: '',
+        noticeList: ['(～￣▽￣)～']
       }
     },
     created(){
@@ -212,6 +217,7 @@
       this.getLastMonthConsumptionMoney();
       this.getLastYearConsumptionMoney();
       this.getTodayConsumptionMoney();
+      this.getNotice();
       setInterval(()=>{
         this.getStaffNumber();
         this.getUserNumber();
@@ -219,7 +225,8 @@
         this.getAllStorefront(); 
         this.getAllStore();
         this.getTodayMoney();
-        this.getTodayConsumptionMoney();   
+        this.getTodayConsumptionMoney();
+        // this.getNotice();   
       },1000*60)
       
     },
@@ -448,6 +455,18 @@
             this.$message.error('网络异常');
         });
       },
+      getNotice(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/notice/selectNotice').then((result) => {
+          if (result == null) {
+            
+          }else{
+            this.noticeList = result.data
+            console.log(result.data)
+          }
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      }
       
     }
   }
@@ -618,8 +637,14 @@
     font-weight: bold; */
   }
 
-  /* .watch-layout{
-    text-align: center;
-    width: 100%;
-  } */
+  .watch-layout{
+    /* text-align: center; */
+    width: 50%;
+    position: absolute;
+    z-index: 9999;
+    top: 8%;
+    left: 30%;
+    filter: Alpha(opacity=70);
+    opacity:0.7;
+  }
 </style>
