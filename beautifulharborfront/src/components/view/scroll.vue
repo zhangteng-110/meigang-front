@@ -1,61 +1,98 @@
 <template>
-  <div class="wrap">
-    <ul id="marquee">
-      <li v-for="(item,index) in lists" :key="index" v-html="'##'+item.noticeText+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'">{{item.noticeText}}</li>
-    </ul>
-  </div>
+    <div class="textBox">
+      <span style="float:left;margin-left:30%;padding-right:1%"><Myhorn></Myhorn></span>
+      <transition name="slide">
+        <p class="text" :key="text.id" v-html="text.val">{{text.val}}</p>
+      </transition>
+    </div>
 </template>
-<script type="text/ecmascript-6">
+ 
+<script>
+  import Myhorn from "@/components/view/horn"
 export default {
-  name: "Scroller",
-  props: ["lists"],
- // 父组件传入数据， 数组形式
-  methods: {
-    move() {
-      // 获取内容区宽度
-      let width = document.getElementById("marquee").scrollWidth;
-      let marquee = document.getElementById("marquee");
-      let speed = 700; // 位移距离
-      // 设置位移
-        console.log(width)
-      setInterval(function() {
-        speed = speed - 1;
-        // 如果位移超过文字宽度，则回到起点
-
-        if (-speed >= width*15) {
-          speed = 700;
-        }
-        marquee.style.transform = "translateX(" + speed + "px)";
-      }, 40);
+  name: 'scroll',
+  components:{
+    Myhorn
+  },
+  data () {
+    return {
+      noticeList: [],
+      number: 0,
+      data: []
     }
   },
-  mounted: function() {
-    this.move();
-  }
-};
-</script>
-<style scoped>
-/*样式的话可以写*/
-  .wrap {
-    overflow: hidden;
-    color: red;
-  }
-  #box {
-    height: 100%;
-  }
-  ul,
-    li {
-      margin: 0;
-      padding: 0;
+  computed: {
+    text () {
+      return {
+        id: this.number,
+        val: this.data[this.number]
+      }
     }
-  ul {
-    white-space: nowrap;
-    margin: 0 10px;
+  },
+  mounted () {
+    this.startMove()
+  },
+  created(){
+    this.getNotice()
+  },
+  methods: {
+    getNotice(){
+        this.$axios.get('http://10.6.11.82:3000/meigang/notice/selectNotice').then((result) => {
+          if (result == null) {
+            
+          }else{
+            // this.noticeList = result.data
+            result.data.forEach(element => {
+              this.data.push(element.noticeText)
+            });
+            // console.log(this.data)
+          }
+        }).catch((result) => {
+            this.$message.error('网络异常');
+        });
+      },
+    startMove () {
+      // eslint-disable-next-line
+      let timer = setTimeout(() => {
+        if (this.number === 2) {
+          this.number = 0;
+        } else {
+          this.number += 1;
+        }
+        this.startMove();
+      }, 2000); // 滚动不需要停顿则将2000改成动画持续时间
+    }
   }
-  li {
-    height: 100%;
-    list-style: none;
-    margin-right: 10px;
-    display: inline-block;
+}
+</script>
+<style>
+  .textBox {
+    width: 100%;
+    height: 30px;
+    margin: 0 auto;
+    /* overflow: hidden;
+    position: relative; */
+    /* text-align: center; */
   }
+  .text {
+    width: 100%;
+    /* position: absolute; */
+    bottom: 0;
+    line-height: 30px;
+  }
+  .el-alert__content{
+    width: 100%;
+  }
+  .slide-enter-active, .slide-leave-active {
+    transition: all 0.5s linear;
+  }
+  .slide-enter{
+    transform: translateY(20px) scale(1);
+    opacity: 1;
+  }
+  .slide-leave-to {
+    transform: translateY(-20px) scale(0.8);
+    opacity: 0;
+  }
+  
 </style>

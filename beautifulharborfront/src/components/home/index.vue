@@ -7,6 +7,20 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="app-container">
+      <div class="watch-layout">
+          <!-- <el-alert
+            title="📢"
+            type="error" 
+            close-text="知道了">
+            <Scroller :lists="noticeList" class="scrollContainer" />
+          </el-alert> -->
+          <div>
+            <el-alert style="background-color:#ffffff;" type="success">
+              <span><Scroller class="scrollContainer" /></span> 
+            </el-alert>
+            
+          </div>
+      </div>
       <div class="overview-layout">
       <el-tabs type="border-card" style="height:auto;">
         <el-tab-pane label="用户总览(单位/人)" >
@@ -49,6 +63,42 @@
         <el-tab-pane label="店铺总览" style="height:500px;"><my-map></my-map></el-tab-pane>
         </el-tabs>
       </div>
+      <div class="slot-layout">
+        <el-tabs :stretch="true" type="card">
+            <el-tab-pane label="牛店vip充值榜">
+              <div style="height:25px;margin-bottom:10px">
+                <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStorefront">
+                  <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
+                </el-radio-group>
+              </div>
+              <div v-for="(store,index) in storefront" :key="index" class="text item">             
+                <div style="padding:15px 10px;" v-if="index<=9">
+                  <div class="teshu" v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;line-height:20px;font-size:18px">{{index+1}}</div>
+                  <div class="teshu" v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;line-height:20px">{{index+1}}</div>
+                  <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{store.transactionStorefront}}</el-badge></span>
+                  <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{store.transactionStorefront}}</span>
+                  <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{store.transactionMoney}}￥</div>
+                </div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="牛店营销榜">
+              <div style="height:25px;margin-bottom:10px">
+                <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStore">
+                  <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
+                </el-radio-group>
+              </div>
+              <div v-for="(shop,index) in store" :key="index" class="text item">
+                <div style="padding:15px 10px;" v-if="index<=9">
+                  <div class="teshu" v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;line-height:20px;font-size:18px">{{index+1}}</div>
+                  <div class="teshu" v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;line-height:20px">{{index+1}}</div>
+                  <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{shop.consumptionStorefront}}</el-badge></span>
+                  <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{shop.consumptionStorefront}}</span>
+                  <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{shop.consumptionMoney}}￥</div>
+                </div>
+              </div>
+            </el-tab-pane>
+        </el-tabs>
+      </div>
       <div class="statistics-layout">
         <el-tabs type="border-card" class="tabs">
           <el-tab-pane label="VIP充值额度统计">
@@ -56,20 +106,20 @@
               <el-col :span="6">
                 <div style="padding: 20px">
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">当日充值金额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ todaymoney }}</div>
+                    <div style="color: #909399;font-size: 120%">当日充值金额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ todaymoney }}</div>
                   </div> 
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">昨日充值金额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowmoney }}</div>
+                    <div style="color: #909399;font-size: 120%">昨日充值金额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ tomorrowmoney }}</div>
                   </div>        
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">上月充值金额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthmoney }}</div>
+                    <div style="color: #909399;font-size: 120%">上月充值金额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ lastmonthmoney }}</div>
                   </div>
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">今年总充值金额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearmoney }}</div>
+                    <div style="color: #909399;font-size: 120%">今年总充值金额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ lastyearmoney }}</div>
                   </div>
                   <div style="margin-top: 20px;">
                     <!-- <div style="color: #909399;font-size: 14px">本周销售总额</div>
@@ -91,20 +141,20 @@
               <el-col :span="6">
                 <div style="padding: 20px">
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">当日营业额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ todaysalary }}</div>
+                    <div style="color: #909399;font-size: 120%">当日营业额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ todaysalary }}</div>
                   </div>
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">昨日营业额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ tomorrowsalary }}</div>
+                    <div style="color: #909399;font-size: 120%">昨日营业额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ tomorrowsalary }}</div>
                   </div>        
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">上月营业额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastmonthsalary }}</div>
+                    <div style="color: #909399;font-size: 120%">上月营业额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ lastmonthsalary }}</div>
                   </div>
                   <div style="margin-top: 20px;">
-                    <div style="color: #909399;font-size: 14px">今年总营业额</div>
-                    <div style="color: #606266;font-size: 24px;padding: 10px 0">￥{{ lastyearsalary }}</div>
+                    <div style="color: #909399;font-size: 120%">今年总营业额</div>
+                    <div style="color: #606266;font-size: 180%;padding: 10px 0">￥{{ lastyearsalary }}</div>
                   </div>
                 </div>
               </el-col>
@@ -114,67 +164,21 @@
             </el-row>
           </el-tab-pane>
         </el-tabs>        
-      </div>
-    </div>
-    <div class="watch-layout">
-      <!-- <clock :time="time"></clock> -->
-      <!-- <span style="font-size:50px;" id="watch">{{ time }}</span> -->
-      <el-alert
-        title="📢"
-        type="error" 
-        close-text="知道了">
-        <Scroller :lists="noticeList" class="scrollContainer" />
-      </el-alert>
-    </div>
-    <div class="slot-layout">
-      <el-tabs :stretch="true" type="card">
-          <el-tab-pane label="牛店vip充值榜">
-            <div style="height:25px;margin-bottom:10px">
-              <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStorefront">
-                <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
-              </el-radio-group>
-            </div>
-            <div v-for="(store,index) in storefront" :key="index" class="text item">             
-              <div style="padding:15px 10px;" v-if="index<=9">
-                <div class="teshu" v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;line-height:20px;font-size:18px">{{index+1}}</div>
-                <div class="teshu" v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;line-height:20px">{{index+1}}</div>
-                <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{store.transactionStorefront}}</el-badge></span>
-                <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{store.transactionStorefront}}</span>
-                <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{store.transactionMoney}}￥</div>
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="牛店营销榜">
-            <div style="height:25px;margin-bottom:10px">
-              <el-radio-group class="teshu" v-model="radio" size="mini" @change="getAllStore">
-                <el-radio-button v-for="month in months" :label="month" :key="month"></el-radio-button>
-              </el-radio-group>
-            </div>
-            <div v-for="(shop,index) in store" :key="index" class="text item">
-              <div style="padding:15px 10px;" v-if="index<=9">
-                <div class="teshu" v-if="index<3" style="background: #1e436e;color:red;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;font-weight:bold;line-height:20px;font-size:18px">{{index+1}}</div>
-                <div class="teshu" v-if="index>=3" style="background: #1e436e;color:#fff;margin-right: 7px;width: 20px;height: 20px;float: left;border-radius:50%;text-align:center;line-height:20px">{{index+1}}</div>
-                <span style="font-style: oblique;font-size: 14px;" v-if="index<3"><el-badge value="hot" class="item">{{shop.consumptionStorefront}}</el-badge></span>
-                <span style="font-style: oblique;font-size: 14px;" v-if="index>=3">{{shop.consumptionStorefront}}</span>
-                <div style="float:right;font-style: oblique;font-size: 14px;color:#851818;">{{shop.consumptionMoney}}￥</div>
-              </div>
-            </div>
-          </el-tab-pane>
-      </el-tabs>
-    </div>
-    
+      </div>    
+    </div> 
   </el-card>  
 </template>
 
 <script>
   import MyMap from '@/components/view/Map'
   import Scroller from "@/components/view/Scroll"
+
   // import Clock from 'vue-clock2';
   export default {
     name: 'home',
     components: {
       MyMap,
-      Scroller 
+      Scroller,
       // Clock 
     },
     data() {
@@ -196,7 +200,7 @@
         radio: new Date().getMonth()+1,
         months:[1,2,3,4,5,6,7,8,9,10,11,12],
         time: '',
-        noticeList: ['(～￣▽￣)～']
+        // noticeList: ['(～￣▽￣)～']
       }
     },
     created(){
@@ -217,7 +221,7 @@
       this.getLastMonthConsumptionMoney();
       this.getLastYearConsumptionMoney();
       this.getTodayConsumptionMoney();
-      this.getNotice();
+      // this.getNotice();
       setInterval(()=>{
         this.getStaffNumber();
         this.getUserNumber();
@@ -455,18 +459,7 @@
             this.$message.error('网络异常');
         });
       },
-      getNotice(){
-        this.$axios.get('http://10.6.11.82:3000/meigang/notice/selectNotice').then((result) => {
-          if (result == null) {
-            
-          }else{
-            this.noticeList = result.data
-            console.log(result.data)
-          }
-        }).catch((result) => {
-            this.$message.error('网络异常');
-        });
-      }
+      
       
     }
   }
@@ -477,7 +470,7 @@
     /* margin-top: 40px; */
     /* margin-left: 120px;
     margin-right: 120px; */
-    width: 70%;
+    width: 100%;
     float: left;
   }
 
@@ -538,6 +531,9 @@
     margin-top: 20px;
     /* width: 80%; */
     height: auto;
+    width: 70%;
+    float: left;
+
   }
 
   .overview-item-value {
@@ -556,6 +552,8 @@
 
   .statistics-layout {
     margin-top: 20px;
+    width: 70%;
+    float: left;
     /* border: 1px solid #DCDFE6; */
   }
   
@@ -639,12 +637,17 @@
 
   .watch-layout{
     /* text-align: center; */
-    width: 50%;
-    position: absolute;
-    z-index: 9999;
+    width: 100%;
+    margin-top: 1%;
+    /* position: absolute; */
+    /* z-index: 9999; */
     top: 8%;
     left: 30%;
     filter: Alpha(opacity=70);
     opacity:0.7;
   }
+/* 
+  .scrollContainer{
+    width: 500px;
+  } */
 </style>

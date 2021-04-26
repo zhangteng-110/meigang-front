@@ -80,7 +80,7 @@
                 <el-col :span="16">
                     <div class="watch-layout">
                         <!-- <clock :time="time"></clock> -->
-                        <span style="font-size:50px;font-family: newfont;" id="watch">{{ time }}</span>
+                        <span style="font-size:250%;font-family: newfont;" id="watch">{{ time }}</span>
                     </div>
                 </el-col>
                 <div style="padding:10px;height:60px;line-height:1.5;display: inline-block;vertical-align: middle;">
@@ -105,7 +105,7 @@
         <!-- 页面内容 -->
         <el-main class="el-main">
             <!-- <el-scrollbar size="5" color="red"> -->
-            <router-view style="overflow-y:scroll;overflow-x:scroll;height:100%;">
+            <router-view style="overflow-y:scroll;overflow-x:scroll;height:100%;width:100%">
                     
             </router-view>                    
             <!-- </el-scrollbar> -->
@@ -129,7 +129,8 @@
         },
         beforeCreate(){
             const token = localStorage.getItem('token');
-            if (!token) {
+            console.log(token)
+            if (token=="null") {
                 this.$router.push({name:'login'})
             }else{
                 if (this.$route.name == 'home') {

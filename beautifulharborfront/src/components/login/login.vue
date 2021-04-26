@@ -2,7 +2,7 @@
   <div class="login-warp">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
         <div style="text-align: center">
-          <el-image style="width: 100px; height: 100px" :src="logo_url" :fit="'fill'"></el-image>
+          <el-image style="width: 35%; height: 35%" :src="logo_url" :fit="'fill'"></el-image>
         </div>
         <el-form-item prop="username">
           <el-input name="username"
@@ -201,8 +201,8 @@
 
   .login-warp .login-form{
     background-color: white;
-    width: 450px;
-    height: 420px;
+    width: 25%;
+    height: 40%;
     padding: 30px;
     border-radius: 5px;
   }

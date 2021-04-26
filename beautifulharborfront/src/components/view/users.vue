@@ -70,7 +70,7 @@ import { default } from '../home/home.vue';
                     </el-tooltip> 
                 </template>        
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="usercode" label="操作" width="250">
+            <el-table-column header-align="center" align="center" prop="usercode" label="操作">
                 <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" content="编辑" placement="top">
                         <el-button plain size="mini" type="primary" icon="el-icon-edit" circle @click="selectUserById(scope.row.userId)"></el-button>
